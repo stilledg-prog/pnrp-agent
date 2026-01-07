@@ -1,0 +1,182 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/guide_bundle.schema.json",
+  "title": "Guide Bundle (PNRP) — guide_bundle.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "bundle",
+    "protocol",
+    "guides",
+    "integrity"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "Versão do schema (semver)."
+    },
+
+    "bundle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bundle_id", "bundle_version", "created_at", "created_by", "status"],
+      "properties": {
+        "bundle_id": {
+          "type": "string",
+          "description": "ID do bundle (UUID recomendado).",
+          "minLength": 8
+        },
+        "bundle_version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "description": "Versão do pacote de guias (semver)."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["DRAFT", "PUBLISHED", "DEPRECATED"]
+        },
+        "created_at": { "type": "string", "format": "date-time" },
+        "created_by": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["actor_id", "actor_role"],
+          "properties": {
+            "actor_id": { "type": "string", "minLength": 3 },
+            "actor_role": {
+              "type": "string",
+              "enum": ["ESCRIVAO", "AUTORIDADE_POLICIAL", "ADMIN_TECNICO", "SISTEMA"]
+            },
+            "unit": { "type": "string" }
+          }
+        },
+        "repository": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Metadados do repositório onde o bundle está versionado.",
+          "properties": {
+            "repo_name": { "type": "string" },
+            "default_branch": { "type": "string" },
+            "tag": { "type": "string" },
+            "commit_hash": { "type": "string" }
+          }
+        },
+        "notes": { "type": "string" }
+      }
+    },
+
+    "protocol": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "portaria", "ruleset_version"],
+      "properties": {
+        "name": { "type": "string" },
+        "portaria": { "type": "string" },
+        "annexes": { "type": "array", "items": { "type": "string" } },
+        "ruleset_version": {
+          "type": "string",
+          "description": "Tag/versão do rules.json sobre a qual o bundle foi escrito."
+        }
+      }
+    },
+
+    "guides": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Lista de guias incluídos no bundle (cada um com hash e metadados).",
+      "items": { "$ref": "#/$defs/guide_entry" }
+    },
+
+    "integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["hash_algorithm", "bundle_hash_sha256"],
+      "properties": {
+        "hash_algorithm": { "type": "string", "const": "SHA-256" },
+        "bundle_hash_sha256": {
+          "$ref": "#/$defs/hash_sha256",
+          "description": "Hash do bundle (canonicalização definida pela implementação)."
+        },
+        "canonicalization": {
+          "type": "string",
+          "description": "Método de canonicalização utilizado para gerar o hash (opcional)."
+        },
+        "included_files_manifest": {
+          "type": "array",
+          "description": "Opcional: lista determinística dos arquivos incluídos e seus hashes (para auditoria).",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "hash_sha256"],
+            "properties": {
+              "path": { "type": "string" },
+              "hash_sha256": { "$ref": "#/$defs/hash_sha256" }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "$defs": {
+    "hash_sha256": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+
+    "guide_entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["guide_id", "title", "path", "version", "content_hash_sha256", "status"],
+      "properties": {
+        "guide_id": {
+          "type": "string",
+          "description": "Identificador estável do guia (ex.: operacao_presencial, operacao_fotografico, ia_manual)."
+        },
+        "title": { "type": "string" },
+        "path": {
+          "type": "string",
+          "description": "Caminho no repositório (ex.: guides/operacao_presencial.md)."
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["ACTIVE", "DEPRECATED"]
+        },
+        "applies_to": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "modalities": {
+              "type": "array",
+              "items": { "type": "string", "enum": ["PRESENCIAL", "FOTOGRAFICO", "VOZ"] }
+            }
+          }
+        },
+        "authors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name"],
+            "properties": {
+              "name": { "type": "string" },
+              "role": { "type": "string" },
+              "unit": { "type": "string" }
+            }
+          }
+        },
+        "rules_ref": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Lista opcional de regras citadas/ancoradas explicitamente no guia."
+        },
+        "content_hash_sha256": { "$ref": "#/$defs/hash_sha256" }
+      }
+    }
+  }
+}

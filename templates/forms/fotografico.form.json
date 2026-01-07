@@ -1,0 +1,570 @@
+{
+  "template_id": "form_fotografico_pnrp_v0_1_0",
+  "template_version": "0.1.0",
+  "name": "Formulário de Reconhecimento Fotográfico (PNRP)",
+  "language": "pt-BR",
+  "protocol": {
+    "name": "Protocolo Nacional de Reconhecimento de Pessoas (PNRP)",
+    "portaria": "MJSP nº 1122/2026",
+    "annex": "Anexo III",
+    "ruleset_version_bind": "/protocol/ruleset_version"
+  },
+  "output": {
+    "primary_record": "recognition_case.json",
+    "term_document": {
+      "type": "TERMO",
+      "format": "PDF",
+      "storage_ref_bind": "/evidence/term/storage_ref"
+    }
+  },
+  "ui_hints": {
+    "title": "Reconhecimento Fotográfico",
+    "show_progress": true
+  },
+  "sections": [
+    {
+      "id": "S1",
+      "title": "Identificação do Procedimento",
+      "fields": [
+        {
+          "id": "case_id",
+          "label": "Case ID",
+          "type": "text",
+          "required": true,
+          "bind": "/case/case_id"
+        },
+        {
+          "id": "procedure_type",
+          "label": "Tipo de procedimento",
+          "type": "select",
+          "required": true,
+          "options": ["IP", "TC", "BO", "APF", "PA", "OUTRO"],
+          "bind": "/case/procedure_ref/type"
+        },
+        {
+          "id": "procedure_number",
+          "label": "Número do procedimento",
+          "type": "text",
+          "required": true,
+          "bind": "/case/procedure_ref/number"
+        },
+        {
+          "id": "agency_name",
+          "label": "Órgão",
+          "type": "text",
+          "required": true,
+          "bind": "/case/agency/name"
+        },
+        {
+          "id": "agency_unit",
+          "label": "Unidade",
+          "type": "text",
+          "required": true,
+          "bind": "/case/agency/unit"
+        },
+        {
+          "id": "procedure_started_at",
+          "label": "Início do procedimento (data/hora)",
+          "type": "datetime",
+          "required": true,
+          "bind": "/procedure/date_time/started_at"
+        },
+        {
+          "id": "procedure_ended_at",
+          "label": "Término do procedimento (data/hora)",
+          "type": "datetime",
+          "required": true,
+          "bind": "/procedure/date_time/ended_at"
+        },
+        {
+          "id": "timezone",
+          "label": "Fuso horário",
+          "type": "text",
+          "required": true,
+          "default": "America/Sao_Paulo",
+          "bind": "/procedure/date_time/timezone"
+        },
+        {
+          "id": "location_type",
+          "label": "Local (tipo)",
+          "type": "select",
+          "required": true,
+          "options": ["DELEGACIA", "OUTRO_AMBIENTE_CONTROLADO", "REMOTO_CONTROLADO"],
+          "bind": "/procedure/location/type"
+        },
+        {
+          "id": "location_desc",
+          "label": "Local (descrição)",
+          "type": "text",
+          "required": true,
+          "bind": "/procedure/location/description"
+        }
+      ]
+    },
+    {
+      "id": "S2",
+      "title": "Justificativa do Reconhecimento Fotográfico (subsidiário e excepcional)",
+      "rules_ref": ["PR-037", "PR-038", "PR-039"],
+      "fields": [
+        {
+          "id": "photo_modality_reason",
+          "label": "Justificativa formal de impossibilidade do presencial",
+          "type": "textarea",
+          "required": true,
+          "minLength": 10,
+          "bind": "/procedure/justification/photo_modality_reason"
+        },
+        {
+          "id": "sigilo_investigacao",
+          "label": "A investigação tramita sob sigilo e o investigado a desconhece?",
+          "type": "boolean",
+          "required": false,
+          "bind": "/procedure/justification/investigation_secrecy_context"
+        }
+      ]
+    },
+    {
+      "id": "S3",
+      "title": "Entrevista Prévia (obrigatória)",
+      "rules_ref": ["PR-014", "PR-015", "PR-016", "PR-017", "PR-018", "PR-023"],
+      "fields": [
+        {
+          "id": "preinterview_conducted",
+          "label": "Entrevista prévia realizada (individual e reservada)?",
+          "type": "boolean",
+          "required": true,
+          "bind": "/pre_interview/was_conducted"
+        },
+        {
+          "id": "free_narrative",
+          "label": "Descrição livre e espontânea (relato em perguntas abertas)",
+          "type": "textarea",
+          "required": true,
+          "minLength": 10,
+          "bind": "/pre_interview/free_description/narrative"
+        },
+        {
+          "id": "visibility_time_seconds",
+          "label": "Tempo aproximado de visualização (segundos)",
+          "type": "number",
+          "required": true,
+          "min": 0,
+          "bind": "/pre_interview/visibility_conditions/time_seen_seconds"
+        },
+        {
+          "id": "visibility_distance_meters",
+          "label": "Distância aproximada (metros)",
+          "type": "number",
+          "required": true,
+          "min": 0,
+          "bind": "/pre_interview/visibility_conditions/distance_meters"
+        },
+        {
+          "id": "visibility_lighting",
+          "label": "Iluminação no momento do fato",
+          "type": "text",
+          "required": true,
+          "bind": "/pre_interview/visibility_conditions/lighting"
+        },
+        {
+          "id": "visibility_angle",
+          "label": "Ângulo/posição de observação",
+          "type": "text",
+          "required": true,
+          "bind": "/pre_interview/visibility_conditions/angle"
+        },
+        {
+          "id": "time_of_day",
+          "label": "Horário estimado do fato",
+          "type": "text",
+          "required": true,
+          "bind": "/pre_interview/visibility_conditions/time_of_day"
+        },
+        {
+          "id": "prior_knew_before",
+          "label": "O reconhecedor já conhecia previamente o reconhecido?",
+          "type": "boolean",
+          "required": true,
+          "bind": "/pre_interview/prior_knowledge/knew_before"
+        },
+        {
+          "id": "prior_image_exposure",
+          "label": "Houve contato anterior com imagens/informações/relatos sobre a pessoa/fato?",
+          "type": "boolean",
+          "required": true,
+          "bind": "/pre_interview/prior_knowledge/prior_image_exposure"
+        },
+        {
+          "id": "exposure_details",
+          "label": "Detalhamento do contato prévio (se houve)",
+          "type": "textarea",
+          "required": false,
+          "show_if": { "field": "prior_image_exposure", "equals": true },
+          "bind": "/pre_interview/prior_knowledge/exposure_details"
+        },
+        {
+          "id": "recognizer_self_race",
+          "label": "Autodeclaração raça/cor do reconhecedor (IBGE)",
+          "type": "select",
+          "required": true,
+          "options": ["amarelo", "branco", "indigena", "pardo", "preto"],
+          "bind": "/pre_interview/race_color/recognizer_self"
+        },
+        {
+          "id": "subject_self_race",
+          "label": "Autodeclaração raça/cor do reconhecido (IBGE)",
+          "type": "select",
+          "required": true,
+          "options": ["amarelo", "branco", "indigena", "pardo", "preto"],
+          "bind": "/pre_interview/race_color/subject_self"
+        },
+        {
+          "id": "recognizer_perception_subject_race",
+          "label": "Heteroidentificação: percepção do reconhecedor sobre raça/cor do reconhecido (IBGE)",
+          "type": "select",
+          "required": true,
+          "options": ["amarelo", "branco", "indigena", "pardo", "preto"],
+          "bind": "/pre_interview/race_color/recognizer_perception_of_subject"
+        }
+      ]
+    },
+    {
+      "id": "S4",
+      "title": "Instruções Formais ao Reconhecedor (antes da exibição)",
+      "rules_ref": ["PR-050"],
+      "fields": [
+        {
+          "id": "instructions_delivered",
+          "label": "As instruções formais foram prestadas?",
+          "type": "boolean",
+          "required": true,
+          "bind": "/instructions/delivered"
+        },
+        {
+          "id": "instr_item_1",
+          "label": "Foi informado que o autor pode ou não estar entre as imagens?",
+          "type": "boolean",
+          "required": true,
+          "bind": "/instructions/items/0/acknowledged",
+          "fixed": { "code": "AUTOR_PODE_NAO_ESTAR_PRESENTE" }
+        },
+        {
+          "id": "instr_item_2",
+          "label": "Foi esclarecido que não há obrigação de reconhecer ninguém?",
+          "type": "boolean",
+          "required": true,
+          "bind": "/instructions/items/1/acknowledged",
+          "fixed": { "code": "NAO_HA_OBRIGACAO_DE_RECONHECER" }
+        },
+        {
+          "id": "instr_item_3",
+          "label": "Foi informado que a investigação prosseguirá mesmo sem reconhecimento?",
+          "type": "boolean",
+          "required": true,
+          "bind": "/instructions/items/2/acknowledged",
+          "fixed": { "code": "INVESTIGACAO_PROSSEGUE" }
+        },
+        {
+          "id": "instr_item_4",
+          "label": "Foi informado que o grau de certeza será registrado em palavras próprias?",
+          "type": "boolean",
+          "required": true,
+          "bind": "/instructions/items/3/acknowledged",
+          "fixed": { "code": "GRAU_CERTEZA_SERA_REGISTRADO" }
+        }
+      ]
+    },
+    {
+      "id": "S5",
+      "title": "Alinhamento Fotográfico (composição e isonomia)",
+      "rules_ref": ["PR-042", "PR-043", "PR-044", "PR-045", "PR-049"],
+      "fields": [
+        {
+          "id": "lineup_mode",
+          "label": "Modo de apresentação",
+          "type": "select",
+          "required": true,
+          "options": ["SIMULTANEO", "SEQUENCIAL"],
+          "bind": "/procedure/lineup_mode"
+        },
+        {
+          "id": "count_total",
+          "label": "Total de imagens no alinhamento (inclui reconhecido)",
+          "type": "number",
+          "required": true,
+          "min": 5,
+          "bind": "/lineup/count_total"
+        },
+        {
+          "id": "count_fillers",
+          "label": "Quantidade de fillers (imagens de pessoas sabidamente inocentes)",
+          "type": "number",
+          "required": true,
+          "min": 4,
+          "bind": "/lineup/count_fillers"
+        },
+        {
+          "id": "showup",
+          "label": "Houve show-up fotográfico (imagem isolada do reconhecido)?",
+          "type": "boolean",
+          "required": true,
+          "bind": "/lineup/showup"
+        },
+        {
+          "id": "showup_justification",
+          "label": "Justificativa formal (se houve show-up)",
+          "type": "textarea",
+          "required": false,
+          "show_if": { "field": "showup", "equals": true },
+          "bind": "/procedure/justification/showup_reason"
+        },
+        {
+          "id": "isonomy_lighting",
+          "label": "Isonomia de iluminação entre imagens",
+          "type": "boolean",
+          "required": true,
+          "bind": "/lineup/photographic/iso_visual/lighting"
+        },
+        {
+          "id": "isonomy_background",
+          "label": "Isonomia de fundo",
+          "type": "boolean",
+          "required": true,
+          "bind": "/lineup/photographic/iso_visual/background"
+        },
+        {
+          "id": "isonomy_resolution",
+          "label": "Isonomia de resolução/qualidade",
+          "type": "boolean",
+          "required": true,
+          "bind": "/lineup/photographic/iso_visual/resolution"
+        },
+        {
+          "id": "isonomy_crop",
+          "label": "Isonomia de enquadramento/plano de corte (rosto e busto)",
+          "type": "boolean",
+          "required": true,
+          "bind": "/lineup/photographic/iso_visual/crop"
+        },
+        {
+          "id": "no_identifiers",
+          "label": "Ausência de identificadores (uniformes, logomarcas, números, textos)",
+          "type": "boolean",
+          "required": true,
+          "bind": "/lineup/photographic/iso_visual/no_identifiers"
+        },
+        {
+          "id": "composition_notes",
+          "label": "Notas sobre semelhança/isonomia e eventuais ajustes",
+          "type": "textarea",
+          "required": true,
+          "minLength": 10,
+          "bind": "/lineup/composition_notes"
+        }
+      ]
+    },
+    {
+      "id": "S6",
+      "title": "Uso de IA (quando aplicável)",
+      "rules_ref": ["IA-001", "IA-003", "IA-005", "IA-006", "MIA-003", "MIA-004", "MIA-007"],
+      "fields": [
+        {
+          "id": "ai_used",
+          "label": "Foi utilizado IA para gerar fillers?",
+          "type": "boolean",
+          "required": true,
+          "bind": "/lineup/photographic/ai/used"
+        },
+        {
+          "id": "ai_justification",
+          "label": "Justificativa formal do uso de IA",
+          "type": "textarea",
+          "required": false,
+          "show_if": { "field": "ai_used", "equals": true },
+          "bind": "/lineup/photographic/ai/justification"
+        },
+        {
+          "id": "ai_tool",
+          "label": "Ferramenta/Plataforma de IA",
+          "type": "text",
+          "required": false,
+          "show_if": { "field": "ai_used", "equals": true },
+          "bind": "/lineup/photographic/ai/tool"
+        },
+        {
+          "id": "ai_parameters",
+          "label": "Parâmetros usados (ex.: cor de pele, traços faciais, idade, estatura, vestuário)",
+          "type": "json_object",
+          "required": false,
+          "show_if": { "field": "ai_used", "equals": true },
+          "bind": "/lineup/photographic/ai/parameters"
+        },
+        {
+          "id": "subject_photo_standardized",
+          "label": "A foto real do reconhecido foi padronizada para isonomia visual?",
+          "type": "boolean",
+          "required": false,
+          "show_if": { "field": "ai_used", "equals": true },
+          "bind": "/lineup/photographic/ai/subject_photo_standardized"
+        },
+        {
+          "id": "generated_assets_ref",
+          "label": "Referência interna ao lote de arquivos gerados por IA",
+          "type": "text",
+          "required": false,
+          "show_if": { "field": "ai_used", "equals": true },
+          "bind": "/lineup/photographic/ai/generated_assets_ref"
+        }
+      ]
+    },
+    {
+      "id": "S7",
+      "title": "Resultado e Registro",
+      "rules_ref": ["PR-051", "PR-006", "PR-007", "PR-005"],
+      "fields": [
+        {
+          "id": "outcome",
+          "label": "Resultado do reconhecimento",
+          "type": "select",
+          "required": true,
+          "options": [
+            "RECONHECEU_COM_CERTEZA",
+            "RECONHECEU_COM_DUVIDA",
+            "NAO_RECONHECEU",
+            "RECONHECIMENTO_PARCIAL"
+          ],
+          "bind": "/result/outcome"
+        },
+        {
+          "id": "recognized_item_id",
+          "label": "Identificador da imagem reconhecida (se aplicável)",
+          "type": "text",
+          "required": false,
+          "bind": "/result/recognized_item_id"
+        },
+        {
+          "id": "certainty_statement",
+          "label": "Grau de certeza (declaração literal do reconhecedor, em palavras próprias)",
+          "type": "textarea",
+          "required": true,
+          "minLength": 3,
+          "bind": "/result/certainty_statement"
+        },
+        {
+          "id": "video_exists",
+          "label": "Registro audiovisual integral foi realizado?",
+          "type": "boolean",
+          "required": true,
+          "bind": "/evidence/video/exists"
+        },
+        {
+          "id": "video_storage_ref",
+          "label": "Referência de armazenamento do vídeo (interno)",
+          "type": "text",
+          "required": true,
+          "show_if": { "field": "video_exists", "equals": true },
+          "bind": "/evidence/video/storage_ref"
+        },
+        {
+          "id": "video_hash_sha256",
+          "label": "Hash SHA-256 do vídeo",
+          "type": "text",
+          "required": false,
+          "pattern": "^[A-Fa-f0-9]{64}$",
+          "show_if": { "field": "video_exists", "equals": true },
+          "bind": "/evidence/video/hash_sha256"
+        },
+        {
+          "id": "term_exists",
+          "label": "Termo circunstanciado (fotográfico) foi lavrado?",
+          "type": "boolean",
+          "required": true,
+          "bind": "/evidence/term/exists"
+        },
+        {
+          "id": "term_storage_ref",
+          "label": "Referência de armazenamento do termo (interno)",
+          "type": "text",
+          "required": true,
+          "show_if": { "field": "term_exists", "equals": true },
+          "bind": "/evidence/term/storage_ref"
+        },
+        {
+          "id": "term_hash_sha256",
+          "label": "Hash SHA-256 do termo",
+          "type": "text",
+          "required": false,
+          "pattern": "^[A-Fa-f0-9]{64}$",
+          "show_if": { "field": "term_exists", "equals": true },
+          "bind": "/evidence/term/hash_sha256"
+        },
+        {
+          "id": "lineup_package_ref",
+          "label": "Referência do pacote de alinhamento (imagens + metadados) (interno)",
+          "type": "text",
+          "required": true,
+          "bind": "/evidence/lineup_package/storage_ref"
+        },
+        {
+          "id": "lineup_package_hash",
+          "label": "Hash SHA-256 do pacote de alinhamento",
+          "type": "text",
+          "required": false,
+          "pattern": "^[A-Fa-f0-9]{64}$",
+          "bind": "/evidence/lineup_package/hash_sha256"
+        }
+      ]
+    }
+  ],
+  "validations": [
+    {
+      "id": "V-F-001",
+      "severity": "ERROR",
+      "when": { "always": true },
+      "assert": { "field": "photo_modality_reason", "minLength": 10 },
+      "message": "Reconhecimento fotográfico exige justificativa formal de impossibilidade do presencial."
+    },
+    {
+      "id": "V-F-002",
+      "severity": "ERROR",
+      "when": { "always": true },
+      "assert": { "field": "count_total", "min": 5 },
+      "message": "Alinhamento fotográfico deve conter no mínimo 5 imagens (1 reconhecido + 4 fillers)."
+    },
+    {
+      "id": "V-F-003",
+      "severity": "ERROR",
+      "when": { "always": true },
+      "assert": { "field": "count_fillers", "min": 4 },
+      "message": "Deve haver no mínimo 4 fillers no alinhamento fotográfico."
+    },
+    {
+      "id": "V-F-004",
+      "severity": "ERROR",
+      "when": { "always": true },
+      "assert": { "all_true": ["isonomy_lighting", "isonomy_background", "isonomy_resolution", "isonomy_crop", "no_identifiers"] },
+      "message": "A isonomia técnica/visual do conjunto deve ser confirmada integralmente."
+    },
+    {
+      "id": "V-F-005",
+      "severity": "ERROR",
+      "when": { "always": true },
+      "assert": { "all_true": ["instr_item_1", "instr_item_2", "instr_item_3", "instr_item_4"] },
+      "message": "As quatro instruções formais devem ser confirmadas como prestadas e compreendidas."
+    },
+    {
+      "id": "V-F-006",
+      "severity": "ERROR",
+      "when": { "field": "showup", "equals": true },
+      "assert": { "field": "showup_justification", "minLength": 10 },
+      "message": "Show-up fotográfico é vedado; se marcado, exige justificativa formal detalhada (controle interno)."
+    },
+    {
+      "id": "V-F-007",
+      "severity": "WARNING",
+      "when": { "field": "ai_used", "equals": true },
+      "assert": { "field": "ai_justification", "minLength": 10 },
+      "message": "Uso de IA deve ser formalmente justificado e rastreável."
+    }
+  ]
+}

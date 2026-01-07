@@ -1,0 +1,354 @@
+{
+  "checklist_id": "avaliacao_pnrp_v0_1_0",
+  "checklist_version": "0.1.0",
+  "name": "Checklist de Avaliação — Reconhecimento de Pessoas (PNRP)",
+  "language": "pt-BR",
+  "protocol": {
+    "name": "Protocolo Nacional de Reconhecimento de Pessoas (PNRP)",
+    "portaria": "MJSP nº 1122/2026",
+    "annex": "Anexo V",
+    "ruleset_version_bind": "/protocol/ruleset_version"
+  },
+  "applies_to": {
+    "modalities": ["PRESENCIAL", "FOTOGRAFICO", "VOZ"],
+    "lineup_modes": ["SIMULTANEO", "SEQUENCIAL"]
+  },
+  "output": {
+    "artifact_type": "CHECKLIST",
+    "result_file": "checklist_result.json",
+    "result_schema_hint": "checklist_result.schema.json",
+    "manifest_binding_hint": {
+      "procedure_manifest": "/artifacts[] (artifact_type=CHECKLIST)"
+    }
+  },
+  "scoring": {
+    "method": "gated",
+    "gates": [
+      {
+        "gate_id": "G1",
+        "name": "Conformidade Crítica",
+        "rule": "Nenhum item CRITICAL pode estar 'NAO' ou 'NAO_APLICA' indevido."
+      }
+    ],
+    "summary_levels": ["CONFORME", "CONFORME_COM_RESSALVAS", "NAO_CONFORME"],
+    "severity_order": ["CRITICAL", "HIGH", "MEDIUM", "LOW", "INFO"]
+  },
+  "response_options": ["SIM", "NAO", "NAO_APLICA"],
+  "sections": [
+    {
+      "id": "C1",
+      "title": "Etapa Prévia — Entrevista Prévia",
+      "rules_ref": ["PR-014", "PR-015", "PR-016", "PR-017", "PR-018", "PR-021", "PR-023"],
+      "items": [
+        {
+          "id": "C1.1",
+          "label": "Entrevista prévia foi realizada de forma individual e reservada, antes de qualquer apresentação do reconhecido?",
+          "severity": "CRITICAL",
+          "expected": "SIM",
+          "evidence": [{ "type": "VIDEO", "hint": "pre_interview_recording" }],
+          "bind_hints": ["/pre_interview/was_conducted"]
+        },
+        {
+          "id": "C1.2",
+          "label": "Foi colhida descrição livre e espontânea mediante perguntas abertas (sem indução)?",
+          "severity": "CRITICAL",
+          "expected": "SIM",
+          "evidence": [{ "type": "TERMO", "hint": "pre_interview_term" }],
+          "bind_hints": ["/pre_interview/free_description/narrative", "/pre_interview/anti_suggestion/no_inductive_questions"]
+        },
+        {
+          "id": "C1.3",
+          "label": "Foram registradas condições de visibilidade/percepção (tempo, distância, iluminação, ângulo, horário estimado e fatores relevantes)?",
+          "severity": "HIGH",
+          "expected": "SIM",
+          "bind_hints": ["/pre_interview/visibility_conditions"]
+        },
+        {
+          "id": "C1.4",
+          "label": "Foi verificado e registrado conhecimento prévio do reconhecido e/ou exposição anterior a imagens/informações/relatos?",
+          "severity": "HIGH",
+          "expected": "SIM",
+          "bind_hints": ["/pre_interview/prior_knowledge"]
+        },
+        {
+          "id": "C1.5",
+          "label": "Foram registradas autodeclarações e heteroidentificação (padrão IBGE) para fins de controle de vieses?",
+          "severity": "MEDIUM",
+          "expected": "SIM",
+          "bind_hints": ["/pre_interview/race_color"]
+        }
+      ]
+    },
+
+    {
+      "id": "C2",
+      "title": "Instruções Formais ao Reconhecedor (antes do alinhamento/exibição)",
+      "rules_ref": ["PR-024", "PR-050"],
+      "items": [
+        {
+          "id": "C2.1",
+          "label": "Foi informado que o autor pode ou não estar presente no alinhamento (ou entre as imagens/áudios)?",
+          "severity": "CRITICAL",
+          "expected": "SIM",
+          "bind_hints": ["/instructions/items[code=AUTOR_PODE_NAO_ESTAR_PRESENTE]/acknowledged"]
+        },
+        {
+          "id": "C2.2",
+          "label": "Foi esclarecido que não há obrigação de reconhecer alguém?",
+          "severity": "CRITICAL",
+          "expected": "SIM",
+          "bind_hints": ["/instructions/items[code=NAO_HA_OBRIGACAO_DE_RECONHECER]/acknowledged"]
+        },
+        {
+          "id": "C2.3",
+          "label": "Foi informado que a investigação prosseguirá mesmo sem reconhecimento?",
+          "severity": "HIGH",
+          "expected": "SIM",
+          "bind_hints": ["/instructions/items[code=INVESTIGACAO_PROSSEGUE]/acknowledged"]
+        },
+        {
+          "id": "C2.4",
+          "label": "Foi informado que o grau de certeza será registrado em palavras próprias?",
+          "severity": "CRITICAL",
+          "expected": "SIM",
+          "bind_hints": ["/instructions/items[code=GRAU_CERTEZA_SERA_REGISTRADO]/acknowledged"]
+        }
+      ]
+    },
+
+    {
+      "id": "C3",
+      "title": "Apresentação/Alinhamento — Regras Gerais",
+      "rules_ref": ["PR-002", "PR-025", "PR-027", "PR-028", "PR-031", "PR-033", "PR-042", "PR-043", "PR-044", "PR-045", "PR-049"],
+      "items": [
+        {
+          "id": "C3.1",
+          "label": "O alinhamento contou com no mínimo 5 itens (1 reconhecido + ao menos 4 fillers)?",
+          "severity": "CRITICAL",
+          "expected": "SIM",
+          "bind_hints": ["/lineup/count_total", "/lineup/count_fillers"]
+        },
+        {
+          "id": "C3.2",
+          "label": "Não houve show-up (apresentação isolada do reconhecido/imagem/áudio)?",
+          "severity": "CRITICAL",
+          "expected": "SIM",
+          "bind_hints": ["/lineup/showup"]
+        },
+        {
+          "id": "C3.3",
+          "label": "Os fillers eram semelhantes às características previamente descritas (sem destaque visual do reconhecido)?",
+          "severity": "CRITICAL",
+          "expected": "SIM",
+          "bind_hints": ["/lineup/composition_notes"]
+        },
+        {
+          "id": "C3.4",
+          "label": "Não foi utilizado álbum policial/criminal ou conjunto composto exclusivamente por investigados/processados (inclusive redes sociais) como forma de apresentação sugestiva?",
+          "severity": "CRITICAL",
+          "expected": "SIM"
+        },
+        {
+          "id": "C3.5",
+          "label": "O procedimento evitou sugestão verbal/não verbal e reforço por parte de agentes, terceiros ou ambiente?",
+          "severity": "CRITICAL",
+          "expected": "SIM"
+        }
+      ]
+    },
+
+    {
+      "id": "C4",
+      "title": "Regras Específicas — Presencial",
+      "applies_if": { "field_path": "/procedure/modality", "equals": "PRESENCIAL" },
+      "rules_ref": ["PR-025", "PR-026", "PR-028", "PR-029", "PR-035"],
+      "items": [
+        {
+          "id": "C4.1",
+          "label": "Posicionamento do reconhecido foi variado a cada ato (não sistemático)?",
+          "severity": "HIGH",
+          "expected": "SIM",
+          "bind_hints": ["/lineup/positioning_varied"]
+        },
+        {
+          "id": "C4.2",
+          "label": "O mesmo reconhecido não foi reapresentado ao mesmo reconhecedor (salvo justificativa excepcional registrada)?",
+          "severity": "HIGH",
+          "expected": "SIM",
+          "bind_hints": ["/lineup/reused_subject"]
+        },
+        {
+          "id": "C4.3",
+          "label": "Se havia múltiplas vítimas/testemunhas, os reconhecimentos foram individualizados e sem contato/contaminação entre elas?",
+          "severity": "HIGH",
+          "expected": "SIM"
+        }
+      ]
+    },
+
+    {
+      "id": "C5",
+      "title": "Regras Específicas — Fotográfico",
+      "applies_if": { "field_path": "/procedure/modality", "equals": "FOTOGRAFICO" },
+      "rules_ref": ["PR-037", "PR-038", "PR-041", "PR-042", "PR-043", "PR-044", "PR-047", "PR-051"],
+      "items": [
+        {
+          "id": "C5.1",
+          "label": "Há justificativa formal e objetiva da impossibilidade do reconhecimento presencial?",
+          "severity": "CRITICAL",
+          "expected": "SIM",
+          "bind_hints": ["/procedure/justification/photo_modality_reason"]
+        },
+        {
+          "id": "C5.2",
+          "label": "As imagens utilizadas foram juntadas/registradas com procedência e possibilidade de auditoria/perícia?",
+          "severity": "CRITICAL",
+          "expected": "SIM",
+          "evidence": [{ "type": "PACOTE_ALINHAMENTO_IMAGENS", "hint": "lineup_package" }],
+          "bind_hints": ["/evidence/lineup_package/storage_ref"]
+        },
+        {
+          "id": "C5.3",
+          "label": "O conjunto possui isonomia técnica (iluminação, fundo, resolução, enquadramento) e ausência de identificadores (uniforme/logomarca/número/texto)?",
+          "severity": "CRITICAL",
+          "expected": "SIM",
+          "bind_hints": ["/lineup/photographic/iso_visual"]
+        },
+        {
+          "id": "C5.4",
+          "label": "Não houve reutilização indevida da imagem do reconhecido ao mesmo reconhecedor sem justificativa formal registrada?",
+          "severity": "HIGH",
+          "expected": "SIM"
+        }
+      ]
+    },
+
+    {
+      "id": "C6",
+      "title": "Uso de IA na Composição de Imagens (quando aplicável)",
+      "applies_if": { "field_path": "/lineup/photographic/ai/used", "equals": true },
+      "rules_ref": ["IA-001", "IA-003", "IA-005", "IA-006", "IA-007", "MIA-003", "MIA-004", "MIA-007", "IA-005"],
+      "items": [
+        {
+          "id": "C6.1",
+          "label": "O uso de IA foi formalmente justificado e registrado (ferramenta + parâmetros + responsável + data)?",
+          "severity": "HIGH",
+          "expected": "SIM",
+          "bind_hints": ["/lineup/photographic/ai/tool", "/lineup/photographic/ai/parameters", "/lineup/photographic/ai/justification"]
+        },
+        {
+          "id": "C6.2",
+          "label": "A foto real do reconhecido (se usada) foi padronizada para isonomia visual (recorte, fundo neutro, ajustes permitidos)?",
+          "severity": "HIGH",
+          "expected": "SIM",
+          "bind_hints": ["/lineup/photographic/ai/subject_photo_standardized"]
+        },
+        {
+          "id": "C6.3",
+          "label": "O lote de arquivos gerados/insumos foi arquivado com rastreabilidade (referência interna/lote)?",
+          "severity": "HIGH",
+          "expected": "SIM",
+          "bind_hints": ["/lineup/photographic/ai/generated_assets_ref"]
+        },
+        {
+          "id": "C6.4",
+          "label": "Não há elementos gráficos/objetos/marcações que distingam o reconhecido no conjunto (sem destaque involuntário)?",
+          "severity": "CRITICAL",
+          "expected": "SIM"
+        }
+      ]
+    },
+
+    {
+      "id": "C7",
+      "title": "Resultado, Grau de Certeza e Pós-Ato",
+      "rules_ref": ["PR-006", "PR-007", "PR-030", "CK-004"],
+      "items": [
+        {
+          "id": "C7.1",
+          "label": "O grau de certeza foi declarado em palavras próprias (declaração literal) e registrado?",
+          "severity": "CRITICAL",
+          "expected": "SIM",
+          "bind_hints": ["/result/certainty_statement"]
+        },
+        {
+          "id": "C7.2",
+          "label": "Não foi fornecido feedback sugestivo ao reconhecedor (reforço/confirmatório) após o ato?",
+          "severity": "CRITICAL",
+          "expected": "SIM",
+          "bind_hints": ["/result/no_feedback_provided"]
+        }
+      ]
+    },
+
+    {
+      "id": "C8",
+      "title": "Registro Audiovisual, Termo e Cadeia de Custódia",
+      "rules_ref": ["PR-006", "PR-007", "PR-008", "PR-009", "PR-011", "PR-012"],
+      "items": [
+        {
+          "id": "C8.1",
+          "label": "Houve gravação audiovisual integral (entrevista prévia até manifestação final)?",
+          "severity": "CRITICAL",
+          "expected": "SIM",
+          "bind_hints": ["/evidence/video/exists", "/evidence/video/storage_ref"]
+        },
+        {
+          "id": "C8.2",
+          "label": "Foi lavrado termo circunstanciado (tempo real ou imediatamente após), com campos mínimos e referência à gravação?",
+          "severity": "CRITICAL",
+          "expected": "SIM",
+          "bind_hints": ["/evidence/term/exists", "/evidence/term/storage_ref"]
+        },
+        {
+          "id": "C8.3",
+          "label": "Há referência interna do pacote de alinhamento (imagens/áudios/metadados) e controle de integridade (hash quando aplicável)?",
+          "severity": "HIGH",
+          "expected": "SIM",
+          "bind_hints": ["/evidence/lineup_package/storage_ref", "/evidence/lineup_package/hash_sha256"]
+        }
+      ]
+    },
+
+    {
+      "id": "C9",
+      "title": "Salvaguardas — Criança/Adolescente e Pessoa com Deficiência (quando aplicável)",
+      "rules_ref": ["CA-001", "CA-004", "CA-006", "CA-008", "PD-001", "PD-004"],
+      "items": [
+        {
+          "id": "C9.1",
+          "label": "Quando aplicável: foram adotadas salvaguardas específicas para criança/adolescente (ambiente adequado, responsável/MP/Conselho, evitar revitimização)?",
+          "severity": "HIGH",
+          "expected": "SIM"
+        },
+        {
+          "id": "C9.2",
+          "label": "Quando aplicável: para adolescente em reconhecimento fotográfico, foram utilizadas somente imagens geradas por IA (vedadas fotos reais)?",
+          "severity": "CRITICAL",
+          "expected": "SIM"
+        },
+        {
+          "id": "C9.3",
+          "label": "Quando aplicável: foram providos recursos de acessibilidade/adaptações razoáveis e consignados no termo?",
+          "severity": "HIGH",
+          "expected": "SIM"
+        }
+      ]
+    }
+  ],
+  "result_model": {
+    "result_fields": [
+      "checklist_id",
+      "checklist_version",
+      "case_id",
+      "procedure_modality",
+      "completed_at",
+      "completed_by",
+      "items",
+      "summary",
+      "findings"
+    ],
+    "item_result_fields": ["item_id", "answer", "notes", "evidence_refs"],
+    "summary_fields": ["overall", "critical_failures", "high_failures", "notes"]
+  }
+}

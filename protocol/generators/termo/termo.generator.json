@@ -1,0 +1,106 @@
+{
+  "generator_id": "termo_generator_pnrp_v0_1_0",
+  "generator_version": "0.1.0",
+  "name": "Gerador de Termo Circunstanciado — Reconhecimento (PNRP)",
+  "inputs": [
+    {
+      "id": "recognition_case",
+      "type": "json",
+      "required": true,
+      "path_hint": "data/recognition_case.json",
+      "schema_hint": "schemas/recognition_case.schema.json"
+    },
+    {
+      "id": "procedure_manifest",
+      "type": "json",
+      "required": true,
+      "path_hint": "data/procedure_manifest.json",
+      "schema_hint": "schemas/procedure_manifest.schema.json"
+    },
+    {
+      "id": "checklist_result",
+      "type": "json",
+      "required": false,
+      "path_hint": "data/checklist_result.json",
+      "schema_hint": "schemas/checklist_result.schema.json"
+    }
+  ],
+  "outputs": [
+    {
+      "id": "term_document",
+      "type": "document",
+      "format": "PDF",
+      "artifact_type": "TERMO",
+      "file_naming": "TERMO_RECONHECIMENTO_${case.case_id}_${procedure.modality}_${procedure.date_time.started_at}.pdf",
+      "manifest_link": {
+        "procedure_manifest_artifact_fields": {
+          "artifact_type": "TERMO",
+          "storage_ref_bind": "/evidence/term/storage_ref",
+          "hash_bind": "/evidence/term/hash_sha256"
+        }
+      }
+    }
+  ],
+  "render": {
+    "engine": "markdown_to_pdf",
+    "templates": [
+      {
+        "modality": "PRESENCIAL",
+        "template_path": "templates/termo/termo_presencial.template.md"
+      },
+      {
+        "modality": "FOTOGRAFICO",
+        "template_path": "templates/termo/termo_fotografico.template.md"
+      }
+    ]
+  },
+  "field_policy": {
+    "pii_level": "FULL_INTERNAL",
+    "redaction_for_public_repo": true,
+    "store_media_inside_repo": false
+  },
+  "minimum_required_fields": {
+    "common": [
+      "/case/case_id",
+      "/case/agency/name",
+      "/case/agency/unit",
+      "/case/procedure_ref/type",
+      "/case/procedure_ref/number",
+      "/procedure/modality",
+      "/procedure/lineup_mode",
+      "/procedure/date_time/started_at",
+      "/procedure/date_time/ended_at",
+      "/procedure/location/type",
+      "/procedure/location/description",
+      "/pre_interview/was_conducted",
+      "/instructions/delivered",
+      "/result/outcome",
+      "/result/certainty_statement",
+      "/evidence/video/exists",
+      "/evidence/term/exists",
+      "/evidence/lineup_package/storage_ref"
+    ],
+    "fotografico_extra": [
+      "/procedure/justification/photo_modality_reason",
+      "/lineup/photographic/iso_visual/no_identifiers"
+    ]
+  },
+  "derived_fields": [
+    {
+      "id": "term_header_line",
+      "compute": "concat(case.procedure_ref.type,' ',case.procedure_ref.number,' — Reconhecimento ',procedure.modality)"
+    },
+    {
+      "id": "video_reference_text",
+      "compute": "if(evidence.video.exists,'Registro audiovisual integral: '+evidence.video.storage_ref,'Registro audiovisual: NÃO REALIZADO — justificar nos autos')"
+    }
+  ],
+  "placeholders": {
+    "syntax": "${path.to.value}",
+    "missing_value_behavior": "error_on_required_else_blank"
+  },
+  "audit": {
+    "embed_generator_footer": true,
+    "footer_text": "Documento gerado automaticamente conforme PNRP (rastreável via procedure_manifest)."
+  }
+}

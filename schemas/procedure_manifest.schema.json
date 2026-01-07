@@ -1,0 +1,523 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/procedure_manifest.schema.json",
+  "title": "Procedure Manifest (PNRP) — procedure_manifest.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "manifest",
+    "protocol",
+    "case_ref",
+    "procedure_ref",
+    "artifacts",
+    "custody_log",
+    "integrity"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Versão do schema (semver).",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+
+    "manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["manifest_id", "created_at", "created_by", "status"],
+      "properties": {
+        "manifest_id": {
+          "type": "string",
+          "description": "ID do manifesto (UUID recomendado).",
+          "minLength": 8
+        },
+        "created_at": { "type": "string", "format": "date-time" },
+        "created_by": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["actor_id", "actor_role"],
+          "properties": {
+            "actor_id": { "type": "string", "minLength": 3 },
+            "actor_role": {
+              "type": "string",
+              "enum": [
+                "CONDUTOR",
+                "ESCRIVAO",
+                "AUTORIDADE_POLICIAL",
+                "PERITO",
+                "PAPILOSCOPISTA",
+                "ADMIN_TECNICO",
+                "SISTEMA"
+              ]
+            },
+            "unit": { "type": "string" }
+          }
+        },
+        "status": {
+          "type": "string",
+          "description": "Estado do manifesto. Fechado indica que o pacote está pronto para remessa/juntada.",
+          "enum": ["DRAFT", "OPEN", "CLOSED"]
+        },
+        "closed_at": { "type": "string", "format": "date-time" },
+        "notes": { "type": "string" }
+      }
+    },
+
+    "protocol": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "portaria", "ruleset_version"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "Protocolo Nacional de Reconhecimento de Pessoas (PNRP)"
+        },
+        "portaria": { "type": "string", "description": "Ex.: 'MJSP nº 1122/2026'." },
+        "annexes": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Ex.: ['Anexo I','Anexo II','Anexo III','Anexo IV','Anexo V']."
+        },
+        "ruleset_version": {
+          "type": "string",
+          "description": "Tag/versão do repositório (rules.json) utilizada no procedimento."
+        }
+      }
+    },
+
+    "case_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["case_id", "agency", "procedure_number"],
+      "properties": {
+        "case_id": { "type": "string", "minLength": 6 },
+        "agency": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "unit"],
+          "properties": {
+            "name": { "type": "string" },
+            "unit": { "type": "string" },
+            "uf": { "type": "string", "minLength": 2, "maxLength": 2 }
+          }
+        },
+        "procedure_type": {
+          "type": "string",
+          "enum": ["IP", "TC", "BO", "APF", "PA", "OUTRO"]
+        },
+        "procedure_number": { "type": "string" },
+        "secrecy_level": { "type": "string", "enum": ["PUBLICO", "RESTRITO", "SIGILOSO"] }
+      }
+    },
+
+    "procedure_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["recognition_case_ref", "modality", "started_at", "ended_at", "timezone"],
+      "properties": {
+        "recognition_case_ref": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "id"],
+          "properties": {
+            "type": {
+              "type": "string",
+              "description": "Tipo do documento de caso ao qual este manifesto se vincula.",
+              "enum": ["recognition_case.json"]
+            },
+            "id": {
+              "type": "string",
+              "description": "ID do case (deve bater com case_ref.case_id ou conter referência inequívoca)."
+            },
+            "storage_ref": {
+              "type": "string",
+              "description": "Referência interna ao arquivo recognition_case.json (quando armazenado)."
+            },
+            "hash_sha256": { "$ref": "#/$defs/hash_sha256" }
+          }
+        },
+        "modality": {
+          "type": "string",
+          "enum": ["PRESENCIAL", "FOTOGRAFICO", "VOZ"]
+        },
+        "lineup_mode": {
+          "type": "string",
+          "enum": ["SIMULTANEO", "SEQUENCIAL"]
+        },
+        "started_at": { "type": "string", "format": "date-time" },
+        "ended_at": { "type": "string", "format": "date-time" },
+        "timezone": { "type": "string", "description": "IANA TZ (ex.: America/Sao_Paulo)." },
+        "location": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "description"],
+          "properties": {
+            "type": { "type": "string", "enum": ["DELEGACIA", "OUTRO_AMBIENTE_CONTROLADO", "REMOTO_CONTROLADO"] },
+            "description": { "type": "string" }
+          }
+        }
+      }
+    },
+
+    "artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Lista de artefatos materiais/probatórios (mídias e documentos) com referências e hashes.",
+      "items": { "$ref": "#/$defs/artifact" }
+    },
+
+    "custody_log": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["events", "append_only"],
+      "properties": {
+        "append_only": {
+          "type": "boolean",
+          "const": true,
+          "description": "Este log deve ser apensado, sem edições destrutivas (append-only)."
+        },
+        "events": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/custody_event" }
+        }
+      }
+    },
+
+    "integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["manifest_hash_sha256", "hash_algorithm", "signatures"],
+      "properties": {
+        "hash_algorithm": { "type": "string", "const": "SHA-256" },
+        "manifest_hash_sha256": {
+          "$ref": "#/$defs/hash_sha256",
+          "description": "Hash do manifesto (canonicalização definida pela implementação)."
+        },
+        "previous_manifest_ref": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Referência ao manifesto anterior (se houver rotação/retificação).",
+          "properties": {
+            "manifest_id": { "type": "string" },
+            "hash_sha256": { "$ref": "#/$defs/hash_sha256" },
+            "storage_ref": { "type": "string" }
+          }
+        },
+        "signatures": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/signature" },
+          "description": "Assinaturas (humanas ou do sistema) sobre o manifesto e/ou artefatos."
+        }
+      }
+    }
+  },
+
+  "allOf": [
+    {
+      "description": "Regra: deve existir pelo menos um termo e um registro audiovisual (ou justificativa formal de ausência, quando admissível na prática institucional).",
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "artifacts": {
+                "type": "array",
+                "contains": { "properties": { "artifact_type": { "const": "TERMO" } }, "required": ["artifact_type"] }
+              }
+            }
+          },
+          "then": true,
+          "else": {
+            "properties": {
+              "artifacts": {
+                "type": "array",
+                "contains": {
+                  "properties": { "artifact_type": { "const": "JUSTIFICATIVA_AUSENCIA_TERMO" } },
+                  "required": ["artifact_type"]
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "artifacts": {
+                "type": "array",
+                "contains": { "properties": { "artifact_type": { "const": "VIDEO" } }, "required": ["artifact_type"] }
+              }
+            }
+          },
+          "then": true,
+          "else": {
+            "properties": {
+              "artifacts": {
+                "type": "array",
+                "contains": {
+                  "properties": { "artifact_type": { "const": "JUSTIFICATIVA_AUSENCIA_VIDEO" } },
+                  "required": ["artifact_type"]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "description": "Regra: se modalidade for FOTOGRAFICO, deve existir PACOTE_ALINHAMENTO_IMAGENS; se VOZ, PACOTE_ALINHAMENTO_AUDIO; se PRESENCIAL, PACOTE_ALINHAMENTO_PRESENCIAL (ou equivalente).",
+      "if": { "properties": { "procedure_ref": { "properties": { "modality": { "const": "FOTOGRAFICO" } } } } },
+      "then": {
+        "properties": {
+          "artifacts": {
+            "type": "array",
+            "contains": {
+              "properties": { "artifact_type": { "const": "PACOTE_ALINHAMENTO_IMAGENS" } },
+              "required": ["artifact_type"]
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "procedure_ref": { "properties": { "modality": { "const": "VOZ" } } } } },
+      "then": {
+        "properties": {
+          "artifacts": {
+            "type": "array",
+            "contains": {
+              "properties": { "artifact_type": { "const": "PACOTE_ALINHAMENTO_AUDIO" } },
+              "required": ["artifact_type"]
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "procedure_ref": { "properties": { "modality": { "const": "PRESENCIAL" } } } } },
+      "then": {
+        "properties": {
+          "artifacts": {
+            "type": "array",
+            "contains": {
+              "properties": { "artifact_type": { "const": "PACOTE_ALINHAMENTO_PRESENCIAL" } },
+              "required": ["artifact_type"]
+            }
+          }
+        }
+      }
+    }
+  ],
+
+  "$defs": {
+    "hash_sha256": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+
+    "storage_ref": {
+      "type": "string",
+      "description": "Referência a cofre/ECM/S3 interno/SEI/etc (não publicar valores reais em repositório público).",
+      "minLength": 3
+    },
+
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifact_id", "artifact_type", "created_at", "storage_ref", "hash_sha256"],
+      "properties": {
+        "artifact_id": { "type": "string", "minLength": 6 },
+        "artifact_type": {
+          "type": "string",
+          "enum": [
+            "VIDEO",
+            "AUDIO",
+            "TERMO",
+            "CHECKLIST",
+            "PACOTE_ALINHAMENTO_IMAGENS",
+            "PACOTE_ALINHAMENTO_AUDIO",
+            "PACOTE_ALINHAMENTO_PRESENCIAL",
+            "ARQUIVOS_IA_GERACAO",
+            "JUSTIFICATIVA_AUSENCIA_VIDEO",
+            "JUSTIFICATIVA_AUSENCIA_TERMO",
+            "OUTRO"
+          ]
+        },
+        "description": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" },
+        "created_by": { "type": "string", "description": "Identificador interno do responsável." },
+
+        "storage_ref": { "$ref": "#/$defs/storage_ref" },
+        "hash_sha256": { "$ref": "#/$defs/hash_sha256" },
+
+        "size_bytes": { "type": "integer", "minimum": 0 },
+        "mime_type": { "type": "string" },
+        "content_classification": {
+          "type": "string",
+          "enum": ["SENSIVEL", "RESTRITO", "PUBLICAVEL"],
+          "description": "Classificação do conteúdo para governança (LGPD/sigilo)."
+        },
+
+        "derived_from": {
+          "type": "array",
+          "description": "Encadeamento de derivação (ex.: pacote de alinhamento derivado de imagens IA + foto padronizada).",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["artifact_id", "hash_sha256"],
+            "properties": {
+              "artifact_id": { "type": "string" },
+              "hash_sha256": { "$ref": "#/$defs/hash_sha256" }
+            }
+          }
+        },
+
+        "ai_metadata": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Metadados de IA (quando aplicável).",
+          "properties": {
+            "used": { "type": "boolean" },
+            "tool_name": { "type": "string" },
+            "tool_version": { "type": "string" },
+            "parameters_ref": {
+              "type": "string",
+              "description": "Referência interna ao documento de parâmetros/prompt/config."
+            },
+            "justification": { "type": "string" },
+            "subject_photo_standardized": { "type": "boolean" }
+          }
+        }
+      }
+    },
+
+    "custody_event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event_id", "at", "actor", "action", "artifact_ref", "event_hash_sha256"],
+      "properties": {
+        "event_id": { "type": "string", "minLength": 6 },
+        "at": { "type": "string", "format": "date-time" },
+        "actor": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["actor_id", "role"],
+          "properties": {
+            "actor_id": { "type": "string" },
+            "role": {
+              "type": "string",
+              "enum": [
+                "CONDUTOR",
+                "ESCRIVAO",
+                "AUTORIDADE_POLICIAL",
+                "PERITO",
+                "PAPILOSCOPISTA",
+                "ADMIN_TECNICO",
+                "SISTEMA"
+              ]
+            },
+            "unit": { "type": "string" }
+          }
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "CRIADO",
+            "ANEXADO",
+            "ACESSADO",
+            "COPIADO",
+            "TRANSFERIDO",
+            "EXPORTADO",
+            "JUNTADO_AOS_AUTOS",
+            "AUDITADO",
+            "ENCERRADO"
+          ]
+        },
+        "artifact_ref": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["artifact_id", "hash_sha256"],
+          "properties": {
+            "artifact_id": { "type": "string" },
+            "hash_sha256": { "$ref": "#/$defs/hash_sha256" },
+            "storage_ref": { "$ref": "#/$defs/storage_ref" }
+          }
+        },
+
+        "prev_event_hash_sha256": {
+          "$ref": "#/$defs/hash_sha256",
+          "description": "Hash do evento anterior (hash chaining para append-only)."
+        },
+        "event_hash_sha256": {
+          "$ref": "#/$defs/hash_sha256",
+          "description": "Hash do evento atual (hash chaining)."
+        },
+        "notes": { "type": "string" }
+      }
+    },
+
+    "signature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["signature_id", "signed_at", "signer", "scope", "signature_format", "signature_value"],
+      "properties": {
+        "signature_id": { "type": "string", "minLength": 6 },
+        "signed_at": { "type": "string", "format": "date-time" },
+        "signer": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["signer_id", "role"],
+          "properties": {
+            "signer_id": { "type": "string" },
+            "role": {
+              "type": "string",
+              "enum": [
+                "CONDUTOR",
+                "ESCRIVAO",
+                "AUTORIDADE_POLICIAL",
+                "PERITO",
+                "ADMIN_TECNICO",
+                "SISTEMA"
+              ]
+            },
+            "certificate_ref": {
+              "type": "string",
+              "description": "Referência ao certificado/chave (uso interno)."
+            }
+          }
+        },
+        "scope": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["covers"],
+          "properties": {
+            "covers": {
+              "type": "string",
+              "enum": ["MANIFEST_ONLY", "MANIFEST_AND_ALL_ARTIFACTS", "SELECTED_ARTIFACTS"]
+            },
+            "artifact_ids": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Obrigatório se covers = SELECTED_ARTIFACTS."
+            }
+          }
+        },
+        "signature_format": {
+          "type": "string",
+          "description": "Formato de assinatura. Exemplos: CMS/PKCS7, JWS, PAdES, XAdES, assinatura interna.",
+          "enum": ["CMS_PKCS7", "JWS", "PADES", "XADES", "INTERNAL"]
+        },
+        "signature_value": {
+          "type": "string",
+          "description": "Assinatura codificada (base64/compact JWS/etc.)"
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "scope": { "properties": { "covers": { "const": "SELECTED_ARTIFACTS" } } } } },
+          "then": { "properties": { "scope": { "required": ["artifact_ids"] } } }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,1088 @@
+{
+  "metadata": {
+    "name": "Inventário de Regras — Protocolo Nacional de Reconhecimento de Pessoas",
+    "source_document": "Portaria MJSP nº 1122/2026 (SEI 34203560) — Anexo I (Protocolo) + Anexos II–V (Formulários, Manual IA, Checklist)",
+    "version_tag_suggested": "v0.1.0",
+    "generated_from": {
+      "document_id": "SEI 34203560",
+      "process_number": "08020.005613/2025-73",
+      "date_signed": "2026-01-05"
+    },
+    "rule_levels": ["MUST", "SHOULD", "MAY", "FORBIDDEN", "GOAL"],
+    "scopes": [
+      "governanca",
+      "cadeia_custodia",
+      "registro_audiovisual",
+      "termo",
+      "entrevista_previa",
+      "instrucoes_reconhecedor",
+      "alinhamento_presencial",
+      "reconhecimento_presencial",
+      "alinhamento_fotografico",
+      "reconhecimento_fotografico",
+      "uso_ia_imagens",
+      "crianca_adolescente",
+      "pessoa_deficiencia",
+      "reconhecimento_por_voz",
+      "tecnologia_informacao",
+      "formularios",
+      "checklist"
+    ],
+    "notes": [
+      "Este rules.json descreve regras atômicas (diretivas) com referência a artigo/inciso/parágrafo. Ele não inclui dados sensíveis e é adequado para repositório público como repertório normativo-operacional.",
+      "A implementação operacional (armazenamento de vídeos/imagens reais, hashes, trilha de auditoria) deve ocorrer em ambiente interno/privado."
+    ]
+  },
+  "rules": [
+    {
+      "id": "P-001",
+      "level": "MUST",
+      "scope": ["governanca"],
+      "source_ref": { "part": "Portaria", "article": "Art. 1º caput" },
+      "title": "Instituição e finalidade do Protocolo",
+      "directive": "Adotar o Protocolo Nacional para subsidiar e padronizar procedimentos de reconhecimento de pessoas, promovendo confiabilidade, segurança jurídica e respeito a direitos fundamentais."
+    },
+    {
+      "id": "P-002",
+      "level": "MUST",
+      "scope": ["governanca"],
+      "source_ref": { "part": "Portaria", "article": "Art. 1º §1º" },
+      "title": "Âmbito de aplicação institucional",
+      "directive": "Aplicar o Protocolo às Polícias Civis, Polícia Federal e Força Nacional quando na função ou no auxílio às ações de polícia judiciária."
+    },
+    {
+      "id": "P-003",
+      "level": "MUST",
+      "scope": ["governanca"],
+      "source_ref": { "part": "Portaria", "article": "Art. 1º §2º" },
+      "title": "Definição de reconhecimento de pessoas",
+      "directive": "Tratar como reconhecimento de pessoas o procedimento formal, com cautelas, em que vítima/testemunha indica possível autor."
+    },
+    {
+      "id": "P-004",
+      "level": "MAY",
+      "scope": ["governanca"],
+      "source_ref": { "part": "Portaria", "article": "Art. 1º §3º" },
+      "title": "Dispensa do reconhecimento formal por conhecimento prévio",
+      "directive": "Dispensar o reconhecimento formal quando vítima/testemunha apenas identifica pessoa que já conhecia previamente.",
+      "condition": "Identificação de pessoa previamente conhecida"
+    },
+    {
+      "id": "P-005",
+      "level": "MUST",
+      "scope": ["governanca"],
+      "source_ref": { "part": "Portaria", "article": "Art. 2º caput" },
+      "title": "Obrigatoriedade na PF e Força Nacional",
+      "directive": "Cumprir integralmente o Protocolo no âmbito da Polícia Federal e da Força Nacional."
+    },
+    {
+      "id": "P-006",
+      "level": "MAY",
+      "scope": ["governanca"],
+      "source_ref": { "part": "Portaria", "article": "Art. 2º §1º" },
+      "title": "Adoção facultativa nas Polícias Civis",
+      "directive": "Adotar o Protocolo nas Polícias Civis como orientação facultativa, respeitada a autonomia federativa."
+    },
+    {
+      "id": "P-007",
+      "level": "SHOULD",
+      "scope": ["governanca"],
+      "source_ref": { "part": "Portaria", "article": "Art. 2º §2º" },
+      "title": "Adesão integral como critério técnico para priorização de repasses",
+      "directive": "Considerar a adesão voluntária e integral ao Protocolo como critério técnico para priorização de repasse de recursos federais relacionados ao reconhecimento de pessoas."
+    },
+
+    {
+      "id": "P-008",
+      "level": "GOAL",
+      "scope": ["governanca"],
+      "source_ref": { "part": "Portaria", "article": "Art. 3º I" },
+      "title": "Objetivo: padronização",
+      "directive": "Padronizar procedimentos técnicos e operacionais de reconhecimento conforme legislação e jurisprudência."
+    },
+    {
+      "id": "P-009",
+      "level": "GOAL",
+      "scope": ["governanca"],
+      "source_ref": { "part": "Portaria", "article": "Art. 3º II" },
+      "title": "Objetivo: reduzir risco de condenações injustas",
+      "directive": "Reduzir risco de condenações injustas com técnicas baseadas em evidências e devido processo legal."
+    },
+    {
+      "id": "P-010",
+      "level": "GOAL",
+      "scope": ["cadeia_custodia"],
+      "source_ref": { "part": "Portaria", "article": "Art. 3º III" },
+      "title": "Objetivo: fortalecer cadeia de custódia",
+      "directive": "Fortalecer cadeia de custódia assegurando segurança da informação, transparência e controle."
+    },
+    {
+      "id": "P-011",
+      "level": "GOAL",
+      "scope": ["governanca"],
+      "source_ref": { "part": "Portaria", "article": "Art. 3º IV" },
+      "title": "Objetivo: prevenir discriminação e vieses",
+      "directive": "Prevenir práticas discriminatórias e combater seletividade penal e vieses estruturais."
+    },
+    {
+      "id": "P-012",
+      "level": "GOAL",
+      "scope": ["governanca"],
+      "source_ref": { "part": "Portaria", "article": "Art. 3º V" },
+      "title": "Objetivo: aprimorar atividade investigativa e probatória",
+      "directive": "Aprimorar atividade investigativa e probatória com segurança jurídica e eficiência."
+    },
+
+    {
+      "id": "P-013",
+      "level": "MUST",
+      "scope": ["governanca"],
+      "source_ref": { "part": "Portaria", "article": "Art. 4º I" },
+      "title": "Diretriz: legalidade e formalismo",
+      "directive": "Seguir estritamente CPP, legislação correlata e normas técnicas do Protocolo."
+    },
+    {
+      "id": "P-014",
+      "level": "MUST",
+      "scope": ["governanca"],
+      "source_ref": { "part": "Portaria", "article": "Art. 4º II" },
+      "title": "Diretriz: direitos fundamentais e vedação de prova ilícita",
+      "directive": "Respeitar dignidade, presunção de inocência, direito à prova e vedação de prova ilícita."
+    },
+    {
+      "id": "P-015",
+      "level": "SHOULD",
+      "scope": ["governanca"],
+      "source_ref": { "part": "Portaria", "article": "Art. 4º III" },
+      "title": "Diretriz: imparcialidade do condutor",
+      "directive": "Conduzir o reconhecimento, sempre que possível, por agente distinto do investigador, vedando indução/sugestão/reforço."
+    },
+    {
+      "id": "P-016",
+      "level": "MUST",
+      "scope": ["governanca"],
+      "source_ref": { "part": "Portaria", "article": "Art. 4º IV" },
+      "title": "Diretriz: base científica e minimização de erro",
+      "directive": "Basear procedimentos em evidências empíricas, psicologia do testemunho e boas práticas para minimizar erro e revitimização."
+    },
+    {
+      "id": "P-017",
+      "level": "MUST",
+      "scope": ["registro_audiovisual"],
+      "source_ref": { "part": "Portaria", "article": "Art. 4º V" },
+      "title": "Diretriz: registro audiovisual obrigatório",
+      "directive": "Documentar integralmente por gravação audiovisual contínua desde a entrevista prévia até a manifestação final."
+    },
+    {
+      "id": "P-018",
+      "level": "MUST",
+      "scope": ["cadeia_custodia"],
+      "source_ref": { "part": "Portaria", "article": "Art. 4º VI" },
+      "title": "Diretriz: controle da cadeia de custódia",
+      "directive": "Incorporar formalmente todo ato ao procedimento, com documentação, padronização e segurança da informação."
+    },
+    {
+      "id": "P-019",
+      "level": "MUST",
+      "scope": ["governanca"],
+      "source_ref": { "part": "Portaria", "article": "Art. 4º VII" },
+      "title": "Diretriz: prevenção de discriminação na composição",
+      "directive": "Compor alinhamento com diversidade racial/fenotípica/socioeconômica e vedar práticas discriminatórias."
+    },
+    {
+      "id": "P-020",
+      "level": "MUST",
+      "scope": ["governanca"],
+      "source_ref": { "part": "Portaria", "article": "Art. 4º IX" },
+      "title": "Diretriz: integração ao sistema de justiça",
+      "directive": "Assegurar valor probatório legítimo, validação judicial, contraditório e ampla defesa."
+    },
+    {
+      "id": "P-021",
+      "level": "MAY",
+      "scope": ["uso_ia_imagens"],
+      "source_ref": { "part": "Portaria", "article": "Art. 4º X" },
+      "title": "Diretriz: uso responsável de IA para geração de imagens",
+      "directive": "Admitir ferramentas de IA para geração de imagens se houver isonomia visual, rastreabilidade e integridade do conjunto."
+    },
+    {
+      "id": "P-022",
+      "level": "FORBIDDEN",
+      "scope": ["reconhecimento_fotografico", "governanca"],
+      "source_ref": { "part": "Portaria", "article": "Art. 4º parágrafo único" },
+      "title": "Vedação: apresentação sugestiva e álbuns criminais",
+      "directive": "Vedada apresentação sugestiva, inclusive uso de álbuns criminais/policiais formados apenas por investigados/processados, inclusive com imagens de redes sociais ou meios equivalentes."
+    },
+    {
+      "id": "P-023",
+      "level": "MAY",
+      "scope": ["governanca"],
+      "source_ref": { "part": "Portaria", "article": "Art. 5º caput" },
+      "title": "Normas complementares e capacitação",
+      "directive": "Editar normas complementares, guias, manuais e planos de capacitação para implementação progressiva."
+    },
+    {
+      "id": "P-024",
+      "level": "MAY",
+      "scope": ["governanca"],
+      "source_ref": { "part": "Portaria", "article": "Art. 5º §1º" },
+      "title": "Normas locais complementares",
+      "directive": "Permitir que órgãos editem normas/guias próprios para internalização e aplicação das diretrizes."
+    },
+    {
+      "id": "P-025",
+      "level": "MUST",
+      "scope": ["governanca"],
+      "source_ref": { "part": "Portaria", "article": "Art. 5º §2º" },
+      "title": "Monitoramento pela SENASP",
+      "directive": "Monitorar implementação e publicar relatórios anuais sobre execução e resultados."
+    },
+
+    {
+      "id": "PR-001",
+      "level": "MUST",
+      "scope": ["cadeia_custodia", "registro_audiovisual"],
+      "source_ref": { "part": "Anexo I", "chapter": "I", "article": "Art. 1º caput" },
+      "title": "Rigor documental e cadeia de custódia (memória humana)",
+      "directive": "Realizar todo ato (presencial ou fotográfico) com documentação rigorosa, registro audiovisual e preservação da cadeia de custódia da prova dependente da memória humana."
+    },
+    {
+      "id": "PR-002",
+      "level": "MUST",
+      "scope": ["alinhamento_presencial", "alinhamento_fotografico"],
+      "source_ref": { "part": "Anexo I", "chapter": "I", "article": "Art. 1º §1º" },
+      "title": "Uso de fillers semelhantes",
+      "directive": "Realizar reconhecimento com fillers com características físicas semelhantes às atribuídas ao reconhecido, evitando destaque visual ou sugestão implícita."
+    },
+    {
+      "id": "PR-003",
+      "level": "SHOULD",
+      "scope": ["governanca", "reconhecimento_presencial", "reconhecimento_fotografico"],
+      "source_ref": { "part": "Anexo I", "chapter": "I", "article": "Art. 1º §2º" },
+      "title": "Procedimento duplo-cego",
+      "directive": "Adotar, sempre que possível, procedimento duplo-cego (apresentador e reconhecedor desconhecem a identidade do suspeito no conjunto)."
+    },
+    {
+      "id": "PR-004",
+      "level": "MUST",
+      "scope": ["governanca"],
+      "source_ref": { "part": "Anexo I", "chapter": "I", "article": "Art. 1º §3º" },
+      "title": "Fundamentação objetiva para submeter pessoa ao reconhecimento",
+      "directive": "Submeter pessoa ao reconhecimento apenas quando houver razão objetivamente fundamentada para considerá-la possível autora ou quando o ato for imprescindível, vedado procedimento exploratório/genérico/sem respaldo concreto."
+    },
+    {
+      "id": "PR-005",
+      "level": "MUST",
+      "scope": ["reconhecimento_fotografico", "cadeia_custodia"],
+      "source_ref": { "part": "Anexo I", "chapter": "I", "article": "Art. 1º §4º" },
+      "title": "Juntada das imagens no reconhecimento fotográfico",
+      "directive": "Juntar obrigatoriamente aos autos as imagens utilizadas no reconhecimento fotográfico."
+    },
+
+    {
+      "id": "PR-006",
+      "level": "MUST",
+      "scope": ["registro_audiovisual", "termo"],
+      "source_ref": { "part": "Anexo I", "chapter": "I", "article": "Art. 2º I" },
+      "title": "Gravação audiovisual integral",
+      "directive": "Gravar integralmente (preferencialmente ininterrupto) a entrevista prévia e todo o procedimento até a manifestação final e grau de certeza.",
+      "required_evidence": ["video_recording"]
+    },
+    {
+      "id": "PR-007",
+      "level": "MUST",
+      "scope": ["termo"],
+      "source_ref": { "part": "Anexo I", "chapter": "I", "article": "Art. 2º II" },
+      "title": "Lavratura do termo circunstanciado",
+      "directive": "Lavrar termo circunstanciado em tempo real ou imediatamente após, contendo campos mínimos.",
+      "required_evidence": ["recognition_term"],
+      "required_fields": [
+        "identificacao_reconhecedor",
+        "identificacao_reconhecido",
+        "identificacao_autoridade_condutora",
+        "identificacao_defensor",
+        "identificacao_servidor_responsavel",
+        "descricao_procedimento_local_data_hora",
+        "forma_exibicao_modalidade",
+        "quantidade_pessoas_ou_imagens",
+        "ordem_exibicao",
+        "intervencoes_eventuais",
+        "declaracao_literal_grau_certeza",
+        "resultado_reconhecimento_ou_negativa",
+        "ciencia_das_partes"
+      ]
+    },
+    {
+      "id": "PR-008",
+      "level": "MUST",
+      "scope": ["cadeia_custodia", "tecnologia_informacao"],
+      "source_ref": { "part": "Anexo I", "chapter": "I", "article": "Art. 3º I" },
+      "title": "Indexação e armazenamento com integridade/rastreabilidade",
+      "directive": "Indexar, datar e armazenar material audiovisual em sistema eletrônico com controle de integridade e rastreabilidade."
+    },
+    {
+      "id": "PR-009",
+      "level": "MUST",
+      "scope": ["cadeia_custodia", "termo"],
+      "source_ref": { "part": "Anexo I", "chapter": "I", "article": "Art. 3º II" },
+      "title": "Incorporação ao procedimento com referência expressa",
+      "directive": "Incorporar o material audiovisual ao procedimento policial com referência expressa nos autos."
+    },
+    {
+      "id": "PR-010",
+      "level": "MAY",
+      "scope": ["cadeia_custodia"],
+      "source_ref": { "part": "Anexo I", "chapter": "I", "article": "Art. 3º parágrafo único" },
+      "title": "Disponibilização do vídeo mediante decisão motivada",
+      "directive": "Admitir requerimento do registro audiovisual pela defesa/partes e decidir sobre disponibilização; indeferimento deve ser motivado em hipóteses de risco ao andamento, segurança ou interesse público."
+    },
+    {
+      "id": "PR-011",
+      "level": "MUST",
+      "scope": ["cadeia_custodia", "tecnologia_informacao"],
+      "source_ref": { "part": "Anexo I", "chapter": "I", "article": "Art. 4º caput" },
+      "title": "Cadeia de custódia adaptada à prova de memória",
+      "directive": "Preservar cadeia de custódia observando peculiaridades da prova dependente da memória, com medidas adequadas de segurança da informação para integridade/autenticidade/confiabilidade."
+    },
+    {
+      "id": "PR-012",
+      "level": "MUST",
+      "scope": ["cadeia_custodia"],
+      "source_ref": { "part": "Anexo I", "chapter": "I", "article": "Art. 4º parágrafo único" },
+      "title": "Guarda e encaminhamento ao Judiciário",
+      "directive": "Manter termos/gravações sob guarda da autoridade competente conforme política de dados e disponibilizar ao Judiciário juntamente com autos, conforme organização local."
+    },
+
+    {
+      "id": "PR-013",
+      "level": "MUST",
+      "scope": ["reconhecimento_presencial"],
+      "source_ref": { "part": "Anexo I", "chapter": "II", "article": "Art. 5º" },
+      "title": "Definição de reconhecimento presencial",
+      "directive": "Tratar como reconhecimento presencial o ato controlado em que vítima/testemunha indica pessoa dentre grupo fisicamente presente."
+    },
+    {
+      "id": "PR-014",
+      "level": "MUST",
+      "scope": ["entrevista_previa", "reconhecimento_presencial"],
+      "source_ref": { "part": "Anexo I", "chapter": "II", "article": "Art. 6º caput" },
+      "title": "Entrevista prévia individual e reservada",
+      "directive": "Realizar entrevista prévia individual e reservada antes do alinhamento, coletando descrição livre e espontânea e demais elementos previstos.",
+      "required_evidence": ["pre_interview_recording", "pre_interview_term"]
+    },
+    {
+      "id": "PR-015",
+      "level": "MUST",
+      "scope": ["entrevista_previa"],
+      "source_ref": { "part": "Anexo I", "chapter": "II", "article": "Art. 6º I" },
+      "title": "Descrição livre com perguntas abertas",
+      "directive": "Colher descrição livre e espontânea por perguntas abertas, abrangendo características físicas gerais, traços específicos, elementos comportamentais/linguísticos e outras informações espontâneas."
+    },
+    {
+      "id": "PR-016",
+      "level": "MUST",
+      "scope": ["entrevista_previa"],
+      "source_ref": { "part": "Anexo I", "chapter": "II", "article": "Art. 6º II" },
+      "title": "Condições de visibilidade e percepção",
+      "directive": "Registrar tempo de visualização, distância, ângulo, iluminação, hora estimada e fatores relevantes à percepção visual."
+    },
+    {
+      "id": "PR-017",
+      "level": "MUST",
+      "scope": ["entrevista_previa"],
+      "source_ref": { "part": "Anexo I", "chapter": "II", "article": "Art. 6º III" },
+      "title": "Verificação de conhecimento prévio e exposições anteriores",
+      "directive": "Registrar eventual conhecimento prévio do reconhecido e contato anterior com imagens/informações/relatos (inclusive por fotos, vídeos, conversas)."
+    },
+    {
+      "id": "PR-018",
+      "level": "MUST",
+      "scope": ["entrevista_previa", "governanca"],
+      "source_ref": { "part": "Anexo I", "chapter": "II", "article": "Art. 6º IV e §1º" },
+      "title": "Autodeclaração racial e heteroidentificação (padrão IBGE)",
+      "directive": "Registrar autodeclaração de raça/cor da vítima/testemunha e do reconhecido, e a percepção declarada (heteroidentificação) do reconhecedor, usando classificação IBGE: amarelo, branco, indígena, pardo, preto."
+    },
+    {
+      "id": "PR-019",
+      "level": "MUST",
+      "scope": ["registro_audiovisual", "entrevista_previa"],
+      "source_ref": { "part": "Anexo I", "chapter": "II", "article": "Art. 6º §2º" },
+      "title": "Registro da entrevista",
+      "directive": "Registrar a entrevista nos termos de documentação e gravação previstos no Protocolo."
+    },
+    {
+      "id": "PR-020",
+      "level": "MUST",
+      "scope": ["reconhecimento_presencial"],
+      "source_ref": { "part": "Anexo I", "chapter": "II", "article": "Art. 6º §3º-§4º" },
+      "title": "Não realizar se divergência substancial",
+      "directive": "Não realizar o procedimento se houver divergência substancial entre descrição fornecida e aparência do reconhecido, definida como discrepância relevante em múltiplos traços, mediante critério fundamentado."
+    },
+    {
+      "id": "PR-021",
+      "level": "MUST",
+      "scope": ["entrevista_previa", "governanca"],
+      "source_ref": { "part": "Anexo I", "chapter": "II", "article": "Art. 6º §5º" },
+      "title": "Descrição antes de qualquer apresentação (vedação de exposição prévia)",
+      "directive": "Colher descrição antes de apresentar o reconhecido, vedando indução ou exposição prévia da imagem."
+    },
+    {
+      "id": "PR-022",
+      "level": "MAY",
+      "scope": ["reconhecimento_presencial"],
+      "source_ref": { "part": "Anexo I", "chapter": "II", "article": "Art. 6º §6º" },
+      "title": "Retrato falado",
+      "directive": "Requisitar confecção de retrato falado para subsidiar composição fotográfica ou outros atos investigativos."
+    },
+    {
+      "id": "PR-023",
+      "level": "FORBIDDEN",
+      "scope": ["entrevista_previa"],
+      "source_ref": { "part": "Anexo I", "chapter": "II", "article": "Art. 6º §7º" },
+      "title": "Vedação de perguntas indutivas na entrevista",
+      "directive": "É vedada formulação de questões que induzam ou sugiram respostas."
+    },
+
+    {
+      "id": "PR-024",
+      "level": "MUST",
+      "scope": ["instrucoes_reconhecedor", "reconhecimento_presencial"],
+      "source_ref": { "part": "Anexo I", "chapter": "II", "article": "Art. 7º" },
+      "title": "Instruções formais antes do alinhamento (presencial)",
+      "directive": "Antes do alinhamento, informar que o autor pode ou não estar presente, que não há obrigação de reconhecer, que a investigação prosseguirá e que o grau de certeza será declarado em palavras próprias."
+    },
+
+    {
+      "id": "PR-025",
+      "level": "MUST",
+      "scope": ["alinhamento_presencial"],
+      "source_ref": { "part": "Anexo I", "chapter": "II", "article": "Art. 8º I" },
+      "title": "Composição mínima do alinhamento presencial",
+      "directive": "Compor alinhamento com no mínimo 5 pessoas (1 reconhecido + ao menos 4 fillers) com características semelhantes às previamente descritas, buscando uniformidade de traços, fenótipo, estatura, idade aproximada, vestuário e compleição.",
+      "validation": { "min_total": 5, "min_fillers": 4 }
+    },
+    {
+      "id": "PR-026",
+      "level": "MAY",
+      "scope": ["alinhamento_presencial"],
+      "source_ref": { "part": "Anexo I", "chapter": "II", "article": "Art. 8º II" },
+      "title": "Modalidade simultânea ou sequencial (presencial)",
+      "directive": "Permitir alinhamento simultâneo (conjunto) ou sequencial (um por vez) em iguais condições de espaço e tempo."
+    },
+    {
+      "id": "PR-027",
+      "level": "FORBIDDEN",
+      "scope": ["alinhamento_presencial"],
+      "source_ref": { "part": "Anexo I", "chapter": "II", "article": "Art. 8º III" },
+      "title": "Vedação de show-up presencial",
+      "directive": "É vedada apresentação isolada da pessoa a ser reconhecida (show-up)."
+    },
+    {
+      "id": "PR-028",
+      "level": "MUST",
+      "scope": ["alinhamento_presencial"],
+      "source_ref": { "part": "Anexo I", "chapter": "II", "article": "Art. 8º IV" },
+      "title": "Variação de posicionamento",
+      "directive": "Variar o posicionamento no alinhamento a cada ato, vedada apresentação sistemática do reconhecido na mesma posição."
+    },
+    {
+      "id": "PR-029",
+      "level": "FORBIDDEN",
+      "scope": ["alinhamento_presencial"],
+      "source_ref": { "part": "Anexo I", "chapter": "II", "article": "Art. 8º V" },
+      "title": "Vedação de reapresentação do mesmo reconhecido",
+      "directive": "É vedada reapresentação do mesmo reconhecido perante a mesma vítima/testemunha, salvo caso fortuito/força maior com justificativa e registro."
+    },
+
+    {
+      "id": "PR-030",
+      "level": "FORBIDDEN",
+      "scope": ["reconhecimento_presencial"],
+      "source_ref": { "part": "Anexo I", "chapter": "II", "article": "Art. 9º I" },
+      "title": "Vedação de sugestões",
+      "directive": "Vedadas sugestões diretas ou indiretas, verbais ou não verbais, por autoridade, terceiros ou ambiente."
+    },
+    {
+      "id": "PR-031",
+      "level": "FORBIDDEN",
+      "scope": ["alinhamento_presencial"],
+      "source_ref": { "part": "Anexo I", "chapter": "II", "article": "Art. 9º II" },
+      "title": "Vedação de fillers evidentemente distintos",
+      "directive": "Vedada utilização de pessoas com aparência evidentemente distinta (traços faciais, vestuário, fenótipo, idade, altura, compleição)."
+    },
+    {
+      "id": "PR-032",
+      "level": "FORBIDDEN",
+      "scope": ["alinhamento_presencial"],
+      "source_ref": { "part": "Anexo I", "chapter": "II", "article": "Art. 9º III-IV" },
+      "title": "Vedação de posição sistemática e nova reapresentação sem justificativa",
+      "directive": "Vedadas apresentação sistemática na mesma posição e reapresentação do reconhecido sem justificativa formal registrada."
+    },
+    {
+      "id": "PR-033",
+      "level": "FORBIDDEN",
+      "scope": ["reconhecimento_presencial", "reconhecimento_fotografico"],
+      "source_ref": { "part": "Anexo I", "chapter": "II", "article": "Art. 9º V" },
+      "title": "Vedação de álbuns policiais/criminais e conjuntos só de investigados",
+      "directive": "Vedado uso de álbuns policiais/criminais e conjuntos compostos exclusivamente por investigados/processados, ainda que com imagens de redes sociais ou arquivos policiais."
+    },
+    {
+      "id": "PR-034",
+      "level": "MUST",
+      "scope": ["registro_audiovisual", "termo"],
+      "source_ref": { "part": "Anexo I", "chapter": "II", "article": "Art. 10" },
+      "title": "Registro do reconhecimento presencial",
+      "directive": "Observar regras de registro do art. 2º (vídeo + termo circunstanciado)."
+    },
+    {
+      "id": "PR-035",
+      "level": "MUST",
+      "scope": ["governanca", "reconhecimento_presencial"],
+      "source_ref": { "part": "Anexo I", "chapter": "II", "article": "Art. 11" },
+      "title": "Múltiplas vítimas/testemunhas: isolamento",
+      "directive": "Realizar reconhecimentos individualmente, em momentos distintos, vedando contato/compartilhamento de impressões antes ou após, com anotação nos autos."
+    },
+    {
+      "id": "PR-036",
+      "level": "MUST",
+      "scope": ["reconhecimento_presencial"],
+      "source_ref": { "part": "Anexo I", "chapter": "II", "article": "Art. 12" },
+      "title": "Validade condicionada às cautelas",
+      "directive": "Reconhecimento presencial só é válido com observância das cautelas do capítulo."
+    },
+
+    {
+      "id": "PR-037",
+      "level": "MUST",
+      "scope": ["reconhecimento_fotografico"],
+      "source_ref": { "part": "Anexo I", "chapter": "III", "article": "Art. 13 caput" },
+      "title": "Admissibilidade subsidiária e excepcional do fotográfico",
+      "directive": "Admitir reconhecimento fotográfico apenas de forma subsidiária, excepcional e cautelosa, quando inviável o presencial, com justificativa formal e observância integral das regras."
+    },
+    {
+      "id": "PR-038",
+      "level": "MUST",
+      "scope": ["reconhecimento_fotografico"],
+      "source_ref": { "part": "Anexo I", "chapter": "III", "article": "Art. 13 §1º" },
+      "title": "Motivação da impossibilidade do presencial",
+      "directive": "Motivar expressamente a impossibilidade do presencial por razões logísticas, segurança, sigilo, indisponibilidade do reconhecido ou outra circunstância objetiva."
+    },
+    {
+      "id": "PR-039",
+      "level": "MAY",
+      "scope": ["reconhecimento_fotografico"],
+      "source_ref": { "part": "Anexo I", "chapter": "III", "article": "Art. 13 §2º" },
+      "title": "Fotográfico em investigação sigilosa",
+      "directive": "Admitir reconhecimento fotográfico quando investigação tramitar sob sigilo e investigado a desconheça.",
+      "condition": "Sigilo + desconhecimento do investigado"
+    },
+    {
+      "id": "PR-040",
+      "level": "SHOULD",
+      "scope": ["reconhecimento_fotografico", "tecnologia_informacao"],
+      "source_ref": { "part": "Anexo I", "chapter": "III", "article": "Art. 13 §3º" },
+      "title": "Supervisão técnica por peritos/papiloscopistas",
+      "directive": "Contar, sempre que possível, com participação/supervisão de papiloscopistas/peritos (preferencialmente de audiovisual/imagem digital) na montagem/validação técnica."
+    },
+    {
+      "id": "PR-041",
+      "level": "MUST",
+      "scope": ["reconhecimento_fotografico", "cadeia_custodia"],
+      "source_ref": { "part": "Anexo I", "chapter": "III", "article": "Art. 13 §4º" },
+      "title": "Acesso integral e direito a perícia/auditoria",
+      "directive": "Juntar imagens e garantir acesso integral ao reconhecido, permitindo requerer perícia/auditoria em caso de dúvida fundada sobre validade técnica."
+    },
+    {
+      "id": "PR-042",
+      "level": "MUST",
+      "scope": ["alinhamento_fotografico"],
+      "source_ref": { "part": "Anexo I", "chapter": "III", "article": "Art. 14 I" },
+      "title": "Composição mínima do alinhamento fotográfico",
+      "directive": "Apresentar no mínimo 5 fotografias (1 reconhecido + ao menos 4 fillers) com condições técnicas/visuais compatíveis para neutralidade e sem indução.",
+      "validation": { "min_total": 5, "min_fillers": 4 }
+    },
+    {
+      "id": "PR-043",
+      "level": "MUST",
+      "scope": ["alinhamento_fotografico"],
+      "source_ref": { "part": "Anexo I", "chapter": "III", "article": "Art. 14 II" },
+      "title": "Isonomia técnica entre imagens",
+      "directive": "Utilizar imagens com iluminação, fundo, resolução, plano de corte, orientação, escala facial e expressão equivalentes."
+    },
+    {
+      "id": "PR-044",
+      "level": "FORBIDDEN",
+      "scope": ["alinhamento_fotografico"],
+      "source_ref": { "part": "Anexo I", "chapter": "III", "article": "Art. 14 III" },
+      "title": "Vedação de elementos identificadores",
+      "directive": "Vedado uso de imagens com uniformes, logomarcas, inscrições, números ou textos visíveis."
+    },
+    {
+      "id": "PR-045",
+      "level": "FORBIDDEN",
+      "scope": ["reconhecimento_fotografico"],
+      "source_ref": { "part": "Anexo I", "chapter": "III", "article": "Art. 15 I" },
+      "title": "Vedação de show-up fotográfico",
+      "directive": "Vedada exibição isolada da imagem do reconhecido (show-up fotográfico)."
+    },
+    {
+      "id": "PR-046",
+      "level": "FORBIDDEN",
+      "scope": ["reconhecimento_fotografico"],
+      "source_ref": { "part": "Anexo I", "chapter": "III", "article": "Art. 15 II" },
+      "title": "Vedação de álbuns e bancos criminais sem controle",
+      "directive": "Vedada utilização de álbuns policiais/conjuntos de bancos criminais quando não houver controle de validade, origem, isonomia ou autorização judicial."
+    },
+    {
+      "id": "PR-047",
+      "level": "FORBIDDEN",
+      "scope": ["reconhecimento_fotografico"],
+      "source_ref": { "part": "Anexo I", "chapter": "III", "article": "Art. 15 III" },
+      "title": "Vedação de reutilização da imagem do reconhecido",
+      "directive": "Vedada reutilização da imagem do reconhecido em diferentes atos perante a mesma vítima/testemunha sem justificativa formal."
+    },
+    {
+      "id": "PR-048",
+      "level": "FORBIDDEN",
+      "scope": ["reconhecimento_fotografico"],
+      "source_ref": { "part": "Anexo I", "chapter": "III", "article": "Art. 15 IV" },
+      "title": "Vedação de extração indiscriminada de redes sociais/fontes abertas",
+      "directive": "Vedada extração indiscriminada de imagens de redes sociais/fontes abertas sem verificar origem, qualidade técnica e adequação ao padrão visual."
+    },
+    {
+      "id": "PR-049",
+      "level": "FORBIDDEN",
+      "scope": ["alinhamento_fotografico"],
+      "source_ref": { "part": "Anexo I", "chapter": "III", "article": "Art. 15 V" },
+      "title": "Vedação de destaque involuntário do reconhecido",
+      "directive": "Vedada montagem que destaque a imagem do reconhecido por contraste de cor, iluminação, enquadramento, nitidez ou estilo divergente."
+    },
+    {
+      "id": "PR-050",
+      "level": "MUST",
+      "scope": ["instrucoes_reconhecedor", "reconhecimento_fotografico"],
+      "source_ref": { "part": "Anexo I", "chapter": "III", "article": "Art. 16" },
+      "title": "Advertências formais antes do fotográfico",
+      "directive": "Antes da exibição, advertir formalmente que o autor pode ou não estar nas imagens, que não há obrigação de reconhecer, que a investigação prosseguirá e que o grau de certeza será registrado em palavras próprias."
+    },
+    {
+      "id": "PR-051",
+      "level": "MUST",
+      "scope": ["registro_audiovisual", "termo", "reconhecimento_fotografico"],
+      "source_ref": { "part": "Anexo I", "chapter": "III", "article": "Art. 17" },
+      "title": "Documentação do reconhecimento fotográfico",
+      "directive": "Documentar por gravação audiovisual e termo próprio contendo imagens/procedência, modalidade (simultânea/sequencial), manifestação literal e justificativa do fotográfico.",
+      "required_evidence": ["video_recording", "photo_recognition_term"],
+      "required_fields": ["imagens_utilizadas", "procedencia_imagens", "modalidade_exibicao", "declaracao_literal_grau_certeza", "justificativa_opcao_fotografica"]
+    },
+
+    {
+      "id": "IA-001",
+      "level": "MAY",
+      "scope": ["uso_ia_imagens"],
+      "source_ref": { "part": "Anexo I", "chapter": "III", "section": "IA", "article": "Art. 18" },
+      "title": "Admissão do uso de IA para composição de alinhamentos",
+      "directive": "Admitir uso de IA para gerar imagens destinadas à composição de alinhamentos fotográficos, observadas as diretrizes do Protocolo."
+    },
+    {
+      "id": "IA-002",
+      "level": "GOAL",
+      "scope": ["uso_ia_imagens"],
+      "source_ref": { "part": "Anexo I", "chapter": "III", "section": "IA", "article": "Art. 19" },
+      "title": "Finalidades do uso de IA",
+      "directive": "Usar IA para uniformidade estética/técnica, evitar exposição de terceiros, ampliar variedade de perfis sem bancos sensíveis, padronizar e reduzir vieses cognitivos."
+    },
+    {
+      "id": "IA-003",
+      "level": "MUST",
+      "scope": ["uso_ia_imagens"],
+      "source_ref": { "part": "Anexo I", "chapter": "III", "section": "IA", "article": "Art. 20" },
+      "title": "Requisitos das imagens geradas por IA",
+      "directive": "Garantir compatibilidade com a descrição prévia; homogeneidade de qualidade (resolução/enquadramento/iluminação/fundo neutro/posição frontal); e variações fenotípicas coerentes com a descrição para diversidade e redução de sugestão."
+    },
+    {
+      "id": "IA-004",
+      "level": "MAY",
+      "scope": ["uso_ia_imagens"],
+      "source_ref": { "part": "Anexo I", "chapter": "III", "section": "IA", "article": "Art. 21" },
+      "title": "Tratamento prévio da foto do reconhecido para isonomia",
+      "directive": "Ajustar iluminação, nitidez, contraste, enquadramento e fundo; padronizar escala facial/olhar/plano de corte; e eliminar elementos distintivos que destaquem a imagem.",
+      "condition": "Foto real inserida junto a imagens geradas por IA"
+    },
+    {
+      "id": "IA-005",
+      "level": "MUST",
+      "scope": ["uso_ia_imagens", "cadeia_custodia"],
+      "source_ref": { "part": "Anexo I", "chapter": "III", "section": "IA", "article": "Art. 22" },
+      "title": "Registro formal, arquivamento e acesso integral (IA)",
+      "directive": "Registrar o uso de IA (ferramentas, parâmetros, justificativa); arquivar base e arquivos gerados para rastreabilidade; e juntar imagens aos autos garantindo acesso integral e possibilidade de perícia/auditoria."
+    },
+    {
+      "id": "IA-006",
+      "level": "MUST",
+      "scope": ["uso_ia_imagens"],
+      "source_ref": { "part": "Anexo I", "chapter": "III", "section": "IA", "article": "Art. 23" },
+      "title": "IA não substitui garantias do protocolo",
+      "directive": "Manter entrevista prévia, advertência formal e registro audiovisual, mesmo com uso de IA."
+    },
+
+    {
+      "id": "CA-001",
+      "level": "MUST",
+      "scope": ["crianca_adolescente"],
+      "source_ref": { "part": "Anexo I", "chapter": "IV", "article": "Art. 24 I" },
+      "title": "Aplicação da Lei 13.431/2017",
+      "directive": "Realizar procedimentos envolvendo criança/adolescente nos termos da Lei 13.431/2017."
+    },
+    {
+      "id": "CA-002",
+      "level": "MUST",
+      "scope": ["crianca_adolescente"],
+      "source_ref": { "part": "Anexo I", "chapter": "IV", "article": "Art. 24 II" },
+      "title": "Ambiente acolhedor e linguagem adequada",
+      "directive": "Garantir ambiente acolhedor e linguagem clara compatível com idade e desenvolvimento."
+    },
+    {
+      "id": "CA-003",
+      "level": "FORBIDDEN",
+      "scope": ["crianca_adolescente"],
+      "source_ref": { "part": "Anexo I", "chapter": "IV", "article": "Art. 24 III" },
+      "title": "Vedação de indução/pressão",
+      "directive": "Vedada qualquer indução, sugestão ou pressão por autoridade/terceiros/ambiente."
+    },
+    {
+      "id": "CA-004",
+      "level": "MUST",
+      "scope": ["crianca_adolescente"],
+      "source_ref": { "part": "Anexo I", "chapter": "IV", "article": "Art. 24 IV" },
+      "title": "Presença de responsável legal (ou MP/Conselho Tutelar)",
+      "directive": "Assegurar presença de responsável legal, salvo se potencial autor/investigado ou local incerto; nesse caso, garantir acompanhamento por MP ou Conselho Tutelar."
+    },
+    {
+      "id": "CA-005",
+      "level": "MUST",
+      "scope": ["crianca_adolescente", "registro_audiovisual"],
+      "source_ref": { "part": "Anexo I", "chapter": "IV", "article": "Art. 24 V" },
+      "title": "Gravação audiovisual integral (criança/adolescente)",
+      "directive": "Documentar por gravação audiovisual integral."
+    },
+    {
+      "id": "CA-006",
+      "level": "MUST",
+      "scope": ["crianca_adolescente"],
+      "source_ref": { "part": "Anexo I", "chapter": "IV", "article": "Art. 24 VI" },
+      "title": "Evitar revitimização e repetição desnecessária",
+      "directive": "Evitar revitimização, exposição inadequada, repetição desnecessária e exibição não supervisionada de imagens."
+    },
+    {
+      "id": "CA-007",
+      "level": "MUST",
+      "scope": ["crianca_adolescente", "reconhecimento_presencial"],
+      "source_ref": { "part": "Anexo I", "chapter": "IV", "article": "Art. 25" },
+      "title": "Reconhecimento presencial de adolescente como suposto autor de ato infracional",
+      "directive": "Realizar na presença do responsável legal e observar as regras do reconhecimento presencial (Capítulo II)."
+    },
+    {
+      "id": "CA-008",
+      "level": "FORBIDDEN",
+      "scope": ["crianca_adolescente", "reconhecimento_fotografico", "uso_ia_imagens"],
+      "source_ref": { "part": "Anexo I", "chapter": "IV", "article": "Art. 25 parágrafo único" },
+      "title": "Fotográfico de adolescentes: somente IA; vedação de fotos reais",
+      "directive": "No reconhecimento fotográfico de adolescentes, admitir somente imagens geradas por IA; vedada utilização de fotografias reais de crianças/adolescentes."
+    },
+
+    {
+      "id": "PD-001",
+      "level": "MUST",
+      "scope": ["pessoa_deficiencia"],
+      "source_ref": { "part": "Anexo I", "chapter": "V", "article": "Art. 26 caput" },
+      "title": "Acessibilidade e apoio individualizado",
+      "directive": "Assegurar adaptações razoáveis, recursos de acessibilidade e apoio individualizado a pessoas com deficiência (vítimas/testemunhas/investigados) para igualdade de condições."
+    },
+    {
+      "id": "PD-002",
+      "level": "MAY",
+      "scope": ["pessoa_deficiencia"],
+      "source_ref": { "part": "Anexo I", "chapter": "V", "article": "Art. 26 §1º" },
+      "title": "Extensão a reconhecimentos por outros sentidos",
+      "directive": "Estender e adaptar diretrizes a reconhecimentos por voz, tato ou outras características sensoriais, quando admissíveis."
+    },
+    {
+      "id": "PD-003",
+      "level": "MUST",
+      "scope": ["pessoa_deficiencia"],
+      "source_ref": { "part": "Anexo I", "chapter": "V", "article": "Art. 26 §2º" },
+      "title": "Medidas para compreensão e manifestação livre",
+      "directive": "Adotar linguagem acessível, intérprete de Libras, tecnologia assistiva, local acessível e acompanhamento por pessoa de apoio quando necessário/consentido; se o responsável legal for potencial autor/investigado, assegurar MP/Conselho Tutelar (quando aplicável)."
+    },
+    {
+      "id": "PD-004",
+      "level": "MUST",
+      "scope": ["pessoa_deficiencia", "termo"],
+      "source_ref": { "part": "Anexo I", "chapter": "V", "article": "Art. 26 §3º" },
+      "title": "Consignação das adaptações no termo",
+      "directive": "Consignar no termo de reconhecimento as adaptações realizadas e participação de profissional especializado quando aplicável."
+    },
+    {
+      "id": "PD-005",
+      "level": "SHOULD",
+      "scope": ["pessoa_deficiencia", "tecnologia_informacao"],
+      "source_ref": { "part": "Anexo I", "chapter": "V", "article": "Art. 26 §4º" },
+      "title": "Emprego de tecnologias assistivas",
+      "directive": "Empregar, sempre que possível, tecnologias assistivas (leitor de tela, ampliadores, sintetizadores, audiodescrição, reconhecimento de fala etc.)."
+    },
+
+    {
+      "id": "VOZ-001",
+      "level": "MAY",
+      "scope": ["reconhecimento_por_voz"],
+      "source_ref": { "part": "Anexo I", "chapter": "V", "section": "Reconhecimento por Voz", "article": "Art. 27 caput" },
+      "title": "Aplicabilidade do Protocolo ao reconhecimento por voz",
+      "directive": "Aplicar, no que couber, as diretrizes de neutralidade, imparcialidade, cadeia de custódia e garantias fundamentais ao reconhecimento por voz."
+    },
+    {
+      "id": "VOZ-002",
+      "level": "MUST",
+      "scope": ["reconhecimento_por_voz", "entrevista_previa"],
+      "source_ref": { "part": "Anexo I", "chapter": "V", "section": "Reconhecimento por Voz", "article": "Art. 27 §1º" },
+      "title": "Entrevista prévia no reconhecimento por voz",
+      "directive": "Colher informações sobre conteúdo, contexto e circunstâncias da escuta (idioma, sotaque, entonação, velocidade, timbre; ruído/distância; tempo de exposição e número de interações)."
+    },
+    {
+      "id": "VOZ-003",
+      "level": "SHOULD",
+      "scope": ["reconhecimento_por_voz"],
+      "source_ref": { "part": "Anexo I", "chapter": "V", "section": "Reconhecimento por Voz", "article": "Art. 27 §2º" },
+      "title": "Apresentação padronizada por gravações e fillers vocais",
+      "directive": "Apresentar preferencialmente por gravações de áudio/vídeo homogêneas em qualidade/volume/duração/entonação/conteúdo, com no mínimo 5 falas (1 do reconhecido + demais de fillers vocais semelhantes)."
+    },
+    {
+      "id": "VOZ-004",
+      "level": "MUST",
+      "scope": ["reconhecimento_por_voz", "registro_audiovisual", "termo"],
+      "source_ref": { "part": "Anexo I", "chapter": "V", "section": "Reconhecimento por Voz", "article": "Art. 27 §3º" },
+      "title": "Documentação do reconhecimento por voz",
+      "directive": "Documentar integralmente por gravação audiovisual e termo próprio, registrando manifestação espontânea e grau de certeza."
+    },
+    {
+      "id": "VOZ-005",
+      "level": "MAY",
+      "scope": ["reconhecimento_por_voz"],
+      "source_ref": { "part": "Anexo I", "chapter": "V", "section": "Reconhecimento por Voz", "article": "Art. 27 §4º" },
+      "title": "Apoio técnico especializado em voz",
+      "directive": "Requisitar apoio de profissionais de fonética/fonologia/perícia em voz quando necessário."
+    },
+
+    {
+      "id": "GOV-001",
+      "level": "MUST",
+      "scope": ["governanca"],
+      "source_ref": { "part": "Anexo I", "chapter": "VI", "article": "Art. 28 I" },
+      "title": "Reconhecimento não como único elemento determinante",
+      "directive": "Zelar para que reconhecimento não seja utilizado como único elemento determinante para indiciamento ou atribuição de autoria."
+    },
+    {
+      "id": "GOV-002",
+      "level": "MUST",
+      "scope": ["governanca"],
+      "source_ref": { "part": "Anexo I", "chapter": "VI", "article": "Art. 28 II" },
+      "title": "Indícios concretos prévios",
+      "directive": "Exigir indícios concretos e externos de envolvimento antes do reconhecimento."
+    },
+    {
+      "id": "GOV-003",
+      "level": "SHOULD",
+      "scope": ["governanca"],
+      "source_ref": { "part": "Anexo I", "chapter": "VI", "article": "Art. 28 III" },
+      "title": "Identificação biométrica após o reconhecimento",
+      "directive": "Realizar, sempre que possível, identificação do investigado com base em elementos biométricos disponíveis após o reconhecimento."
+    },
+    {
+      "id": "GOV-004",
+      "level": "MUST",
+      "scope": ["governanca"],
+      "source_ref": { "part": "Anexo I", "chapter": "VI", "article": "Art. 30" },
+      "title": "Competências SENASP: capacitação e materiais",
+      "directive": "Promover capacitação periódica, materiais didáticos, módulos formativos e normativo para padronização de formulários e manual técnico."
+    },
+    {
+      "id": "GOV-005",
+      "level": "SHOULD",
+      "scope": ["governanca"],
+      "source_ref": { "part": "Anexo I", "chapter": "VI", "article": "Art. 31" },
+      "title": "Internalização local pelos órgãos aderentes",
+      "directive": "Adaptar procedimentos internos, editar normas compatíveis, treinar operadores e enviar relatório anual de implementação ao MJSP."
+    },
+    {
+      "id": "GOV-006",
+      "level": "MUST",
+      "scope": ["governanca"],
+      "source_ref": { "part": "Anexo I", "chapter": "VI", "article": "Art. 32" },
+      "title": "Fiscalização por corregedorias e controle interno",
+      "directive": "Submeter cumprimento do Protocolo à fiscalização das corregedorias e órgãos de controle interno."
+    },
+    {
+      "id": "GOV-007",
+      "level": "MUST",
+      "scope": ["governanca"],
+      "source_ref": { "part": "Anexo I", "chapter": "VI", "article": "Art. 32 parágrafo único" },
+      "title": "Comunicação para apuração de descumprimento",
+      "directive": "Comunicar corregedoria/controle para apuração de eventual infração administrativa ou penal decorrente de descumprimento."
+    },
+    {
+      "id": "TI-001",
+      "level": "MUST",
+      "scope": ["tecnologia_informacao"],
+      "source_ref": { "part": "Anexo I", "chapter": "VI", "article": "Art. 33 caput" },
+      "title": "Observância da Portaria MJSP 961/2025 para tecnologias aplicadas",
+      "directive": "Observar diretrizes da Portaria MJSP nº 961/2025 ao usar soluções de TI e reconhecimento automatizado."
+    },
+    {
+      "id": "TI-002",
+      "level": "MUST",
+      "scope": ["tecnologia_informacao", "cadeia_custodia"],
+      "source_ref": { "part": "Anexo I", "chapter": "VI", "article": "Art. 33 parágrafo único" },
+      "title": "Requisitos de segurança e conformidade de plataformas",
+      "directive": "Assegurar mecanismos de segurança, rastreabilidade, auditabilidade, integridade e confidencialidade, em conformidade com legislação de proteção de dados pessoais e normas do MJSP."
+    },
+
+    {
+      "id": "F-001",
+      "level": "SHOULD",
+      "scope": ["formularios", "reconhecimento_presencial"],
+      "source_ref": { "part": "Anexo II", "name": "Formulário Presencial" },
+      "title": "Campos operacionais mínimos (presencial)",
+      "directive": "Coletar no formulário presencial: data/hora/local, nº do procedimento, órgão, autoridade responsável, confirmação da entrevista prévia e itens registrados, modo de alinhamento, nº total de pessoas, presença do reconhecido, semelhança do alinhamento, show-up/álbuns (com justificativa se excepcional), gravação por vídeo (com justificativa se não)."
+    },
+    {
+      "id": "F-002",
+      "level": "SHOULD",
+      "scope": ["formularios", "reconhecimento_presencial"],
+      "source_ref": { "part": "Anexo II", "name": "Formulário Presencial" },
+      "title": "Campos de declarações do reconhecedor (presencial)",
+      "directive": "Registrar identificação do reconhecedor, confirmação das instruções formais, resultado do reconhecimento (incluindo dúvida/negativa/parcial), posição reconhecida e presença de defensor/advogado."
+    },
+    {
+      "id": "F-003",
+      "level": "SHOULD",
+      "scope": ["formularios", "reconhecimento_fotografico"],
+      "source_ref": { "part": "Anexo III", "name": "Formulário Fotográfico" },
+      "title": "Campos operacionais mínimos (fotográfico)",
+      "directive": "Coletar no formulário fotográfico: data/hora/local, nº do procedimento, autoridade responsável, entrevista prévia e itens, modo de alinhamento, nº total de imagens, inclusão do reconhecido, critérios de semelhança, show-up/álbuns (com justificativa se excepcional), gravação por vídeo (com justificativa se não)."
+    },
+    {
+      "id": "F-004",
+      "level": "SHOULD",
+      "scope": ["formularios", "uso_ia_imagens"],
+      "source_ref": { "part": "Anexo III", "name": "Formulário Fotográfico", "section": "Uso de IA" },
+      "title": "Campos mínimos de IA no formulário",
+      "directive": "Quando houver IA: registrar ferramenta/plataforma, parâmetros usados (ex.: cor de pele, traços faciais, idade, estatura, vestuário), e se a foto do reconhecido foi tratada para padronização."
+    },
+    {
+      "id": "F-005",
+      "level": "SHOULD",
+      "scope": ["formularios", "reconhecimento_fotografico"],
+      "source_ref": { "part": "Anexo III", "name": "Formulário Fotográfico" },
+      "title": "Anexação e identificação das imagens",
+      "directive": "Anexar imagens usadas e registrar identificação da imagem reconhecida (número/identificador)."
+    },
+
+    {
+      "id": "MIA-001",
+      "level": "MUST",
+      "scope": ["uso_ia_imagens"],
+      "source_ref": { "part": "Anexo IV", "name": "Manual IA", "section": "2.1" },
+      "title": "Justificativa formal do uso de IA (manual)",
+      "directive": "Justificar formalmente o uso de IA por carência de meios e/ou padronização/segurança/proteção de terceiros."
+    },
+    {
+      "id": "MIA-002",
+      "level": "MUST",
+      "scope": ["uso_ia_imagens"],
+      "source_ref": { "part": "Anexo IV", "name": "Manual IA", "section": "2.2–2.3" },
+      "title": "Requisitos da ferramenta e uniformidade",
+      "directive": "Usar ferramenta que permita customização paramétrica facial/fenotípica e gerar imagens que simulem fotos reais de pessoas fictícias com uniformidade de qualidade."
+    },
+    {
+      "id": "MIA-003",
+      "level": "MUST",
+      "scope": ["uso_ia_imagens"],
+      "source_ref": { "part": "Anexo IV", "name": "Manual IA", "section": "3.1" },
+      "title": "Padrões técnicos obrigatórios (manual)",
+      "directive": "Gerar imagens com: enquadramento rosto+busto (ombros) frontal; fundo neutro claro; iluminação difusa sem sombras marcadas/reflexos irregulares; expressão neutra (olhos abertos voltados à câmera, se possível); vestuário preferencialmente compatível (ou camiseta/camisa lisa sem caracteres); escala facial harmonizada; diversidade fenotípica dentro dos parâmetros do reconhecedor."
+    },
+    {
+      "id": "MIA-004",
+      "level": "MUST",
+      "scope": ["uso_ia_imagens", "cadeia_custodia"],
+      "source_ref": { "part": "Anexo IV", "name": "Manual IA", "section": "4.1–4.8" },
+      "title": "Procedimento de geração (manual)",
+      "directive": "Fotografar reconhecido conforme parâmetros; tratar imagem (recorte, fundo, iluminação, nitidez, contraste, escala); inserir na ferramenta e gerar quatro imagens de indivíduos fictícios semelhantes; configurar uniformidade; eliminar distorções/artefatos; salvar em formato sem compressão (PNG/TIFF); registrar parâmetros/ferramenta/data/responsável; encaminhar conjunto final."
+    },
+    {
+      "id": "MIA-005",
+      "level": "MUST",
+      "scope": ["uso_ia_imagens"],
+      "source_ref": { "part": "Anexo IV", "name": "Manual IA", "section": "5.1" },
+      "title": "Tratamento permitido da foto real (manual)",
+      "directive": "Quando necessário, tratar a foto real apenas para compatibilização: recorte proporcional; correção de cor/contraste; remoção/substituição de fundo por neutro; ajuste de resolução."
+    },
+    {
+      "id": "MIA-006",
+      "level": "SHOULD",
+      "scope": ["uso_ia_imagens"],
+      "source_ref": { "part": "Anexo IV", "name": "Manual IA", "section": "6.1–6.4" },
+      "title": "Cuidados adicionais (manual)",
+      "directive": "Evitar repetições de padrões faciais idênticos; garantir diversidade sem destaque; registrar parâmetros e modelo/ferramenta; arquivar todos os arquivos gerados/usados."
+    },
+    {
+      "id": "MIA-007",
+      "level": "FORBIDDEN",
+      "scope": ["uso_ia_imagens"],
+      "source_ref": { "part": "Anexo IV", "name": "Manual IA", "section": "7.1–7.3" },
+      "title": "Vedações específicas (manual)",
+      "directive": "Vedada inserção de elementos gráficos/símbolos/objetos; vedado uso de imagens de redes sociais/bancos de suspeitos/registros pessoais sem consentimento/controle legal; vedado conjunto com diferenças visuais que realcem o reconhecido."
+    },
+    {
+      "id": "MIA-008",
+      "level": "SHOULD",
+      "scope": ["uso_ia_imagens", "governanca"],
+      "source_ref": { "part": "Anexo IV", "name": "Manual IA", "section": "8.1–8.4" },
+      "title": "Boas práticas (manual)",
+      "directive": "Realizar testes prévios; preferir ferramentas com variações automáticas; produzir laudos técnicos por perito de TI/tecnologia validando conformidade; instituir unidade central para geração de imagens."
+    },
+
+    {
+      "id": "CK-001",
+      "level": "SHOULD",
+      "scope": ["checklist"],
+      "source_ref": { "part": "Anexo V", "name": "Checklist", "section": "I" },
+      "title": "Checklist — etapa prévia",
+      "directive": "Verificar: entrevista prévia; descrição física livre/espontânea; registro de dinâmica/distância/tempo/iluminação; autodeclaração raça/cor; investigação de influências externas (outras testemunhas/imprensa/redes/servidores); participação anterior em reconhecimentos; perguntas abertas/relato livre; registro por áudio/vídeo."
+    },
+    {
+      "id": "CK-002",
+      "level": "SHOULD",
+      "scope": ["checklist", "instrucoes_reconhecedor"],
+      "source_ref": { "part": "Anexo V", "name": "Checklist", "section": "II" },
+      "title": "Checklist — instruções antes do reconhecimento",
+      "directive": "Verificar: informou que o autor pode ou não estar; esclareceu que pode não reconhecer; informou continuidade da investigação; solicitou manifestação espontânea do grau de certeza."
+    },
+    {
+      "id": "CK-003",
+      "level": "SHOULD",
+      "scope": ["checklist"],
+      "source_ref": { "part": "Anexo V", "name": "Checklist", "section": "III" },
+      "title": "Checklist — apresentação",
+      "directive": "Verificar: reconhecido apresentado uma única vez por reconhecedor; mínimo de 5 fillers/pessoas sabidamente inocentes (conforme checklist); semelhança física; no fotográfico, isonomia técnica (iluminação/plano/resolução/fundo)."
+    },
+    {
+      "id": "CK-004",
+      "level": "SHOULD",
+      "scope": ["checklist", "registro_audiovisual"],
+      "source_ref": { "part": "Anexo V", "name": "Checklist", "section": "IV" },
+      "title": "Checklist — após o reconhecimento",
+      "directive": "Verificar: grau de certeza em palavras próprias; ausência de feedback sobre coincidência com expectativa investigativa; documentação por gravação audiovisual."
+    }
+  ]
+}

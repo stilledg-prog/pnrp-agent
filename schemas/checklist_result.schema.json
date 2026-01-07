@@ -1,0 +1,316 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/checklist_result.schema.json",
+  "title": "Checklist Result (PNRP) — checklist_result.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "checklist",
+    "case_ref",
+    "procedure_ref",
+    "completed",
+    "items",
+    "summary"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Versão do schema (semver).",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+
+    "checklist": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["checklist_id", "checklist_version", "protocol"],
+      "properties": {
+        "checklist_id": { "type": "string", "minLength": 3 },
+        "checklist_version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+        "protocol": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "portaria", "annex", "ruleset_version"],
+          "properties": {
+            "name": { "type": "string" },
+            "portaria": { "type": "string" },
+            "annex": { "type": "string" },
+            "ruleset_version": {
+              "type": "string",
+              "description": "Tag/versão do rules.json aplicado nesta avaliação."
+            }
+          }
+        }
+      }
+    },
+
+    "case_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["case_id", "agency", "procedure_number"],
+      "properties": {
+        "case_id": { "type": "string", "minLength": 6 },
+        "agency": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "unit"],
+          "properties": {
+            "name": { "type": "string" },
+            "unit": { "type": "string" },
+            "uf": { "type": "string", "minLength": 2, "maxLength": 2 }
+          }
+        },
+        "procedure_type": { "type": "string", "enum": ["IP", "TC", "BO", "APF", "PA", "OUTRO"] },
+        "procedure_number": { "type": "string", "minLength": 1 },
+        "secrecy_level": { "type": "string", "enum": ["PUBLICO", "RESTRITO", "SIGILOSO"] }
+      }
+    },
+
+    "procedure_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["modality", "lineup_mode", "started_at", "ended_at", "timezone"],
+      "properties": {
+        "modality": { "type": "string", "enum": ["PRESENCIAL", "FOTOGRAFICO", "VOZ"] },
+        "lineup_mode": { "type": "string", "enum": ["SIMULTANEO", "SEQUENCIAL"] },
+        "started_at": { "type": "string", "format": "date-time" },
+        "ended_at": { "type": "string", "format": "date-time" },
+        "timezone": { "type": "string" },
+        "location": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": { "type": "string", "enum": ["DELEGACIA", "OUTRO_AMBIENTE_CONTROLADO", "REMOTO_CONTROLADO"] },
+            "description": { "type": "string" }
+          }
+        }
+      }
+    },
+
+    "completed": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["completed_at", "completed_by"],
+      "properties": {
+        "completed_at": { "type": "string", "format": "date-time" },
+        "completed_by": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["actor_id", "actor_role"],
+          "properties": {
+            "actor_id": { "type": "string", "minLength": 3 },
+            "actor_role": {
+              "type": "string",
+              "enum": ["CONDUTOR", "ESCRIVAO", "AUTORIDADE_POLICIAL", "PERITO", "PAPILOSCOPISTA", "ADMIN_TECNICO", "SISTEMA"]
+            },
+            "unit": { "type": "string" }
+          }
+        },
+        "tool": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "agent_name": { "type": "string" },
+            "agent_version": { "type": "string" }
+          }
+        }
+      }
+    },
+
+    "items": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Resultados item a item (respostas e evidências).",
+      "items": { "$ref": "#/$defs/item_result" }
+    },
+
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["overall", "counts"],
+      "properties": {
+        "overall": {
+          "type": "string",
+          "description": "Síntese final do checklist.",
+          "enum": ["CONFORME", "CONFORME_COM_RESSALVAS", "NAO_CONFORME"]
+        },
+        "counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["total_items", "answered_items", "failures_by_severity"],
+          "properties": {
+            "total_items": { "type": "integer", "minimum": 1 },
+            "answered_items": { "type": "integer", "minimum": 0 },
+            "failures_by_severity": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["CRITICAL", "HIGH", "MEDIUM", "LOW", "INFO"],
+              "properties": {
+                "CRITICAL": { "type": "integer", "minimum": 0 },
+                "HIGH": { "type": "integer", "minimum": 0 },
+                "MEDIUM": { "type": "integer", "minimum": 0 },
+                "LOW": { "type": "integer", "minimum": 0 },
+                "INFO": { "type": "integer", "minimum": 0 }
+              }
+            },
+            "not_applicable": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "gates": {
+          "type": "array",
+          "description": "Resultados de gates (ex.: conformidade crítica).",
+          "items": { "$ref": "#/$defs/gate_result" }
+        },
+        "notes": { "type": "string" }
+      }
+    },
+
+    "findings": {
+      "type": "array",
+      "description": "Achados e recomendações (texto livre) para correção/mitigação.",
+      "items": { "$ref": "#/$defs/finding" }
+    },
+
+    "integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Opcional: trilha de integridade local do arquivo de resultado (assinado no manifest).",
+      "properties": {
+        "hash_algorithm": { "type": "string", "const": "SHA-256" },
+        "result_hash_sha256": { "$ref": "#/$defs/hash_sha256" }
+      }
+    }
+  },
+
+  "$defs": {
+    "hash_sha256": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+
+    "severity": {
+      "type": "string",
+      "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW", "INFO"]
+    },
+
+    "answer": {
+      "type": "string",
+      "enum": ["SIM", "NAO", "NAO_APLICA"]
+    },
+
+    "evidence_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "VIDEO",
+            "AUDIO",
+            "TERMO",
+            "CHECKLIST",
+            "PACOTE_ALINHAMENTO_IMAGENS",
+            "PACOTE_ALINHAMENTO_AUDIO",
+            "PACOTE_ALINHAMENTO_PRESENCIAL",
+            "ARQUIVOS_IA_GERACAO",
+            "OUTRO"
+          ]
+        },
+        "artifact_id": { "type": "string" },
+        "storage_ref": { "type": "string" },
+        "hash_sha256": { "$ref": "#/$defs/hash_sha256" },
+        "notes": { "type": "string" }
+      }
+    },
+
+    "item_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["item_id", "severity", "answer"],
+      "properties": {
+        "item_id": {
+          "type": "string",
+          "description": "ID do item conforme checklist (ex.: 'C1.1').",
+          "pattern": "^[A-Za-z0-9]+(\\.[0-9]+)+$"
+        },
+        "severity": { "$ref": "#/$defs/severity" },
+        "answer": { "$ref": "#/$defs/answer" },
+        "expected": {
+          "type": "string",
+          "description": "Valor esperado pelo checklist (geralmente 'SIM').",
+          "enum": ["SIM", "NAO", "NAO_APLICA"]
+        },
+        "rules_ref": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Referências ao rules.json aplicáveis ao item."
+        },
+        "notes": { "type": "string" },
+        "evidence_refs": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/evidence_ref" }
+        }
+      }
+    },
+
+    "gate_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["gate_id", "passed"],
+      "properties": {
+        "gate_id": { "type": "string", "minLength": 2 },
+        "passed": { "type": "boolean" },
+        "failed_items": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Lista de item_id que causaram falha no gate."
+        },
+        "notes": { "type": "string" }
+      }
+    },
+
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["severity", "title", "description"],
+      "properties": {
+        "severity": { "$ref": "#/$defs/severity" },
+        "title": { "type": "string", "minLength": 3 },
+        "description": { "type": "string", "minLength": 5 },
+        "related_items": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "recommended_action": { "type": "string" }
+      }
+    }
+  },
+
+  "allOf": [
+    {
+      "description": "Coerência básica: NAO_CONFORME deve indicar ao menos 1 falha CRITICAL ou HIGH.",
+      "if": {
+        "properties": { "summary": { "properties": { "overall": { "const": "NAO_CONFORME" } } } }
+      },
+      "then": {
+        "properties": {
+          "summary": {
+            "properties": {
+              "counts": {
+                "properties": {
+                  "failures_by_severity": {
+                    "anyOf": [
+                      { "properties": { "CRITICAL": { "minimum": 1 } } },
+                      { "properties": { "HIGH": { "minimum": 1 } } }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

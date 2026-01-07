@@ -1,0 +1,316 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/term_document.schema.json",
+  "title": "Term Document Metadata (PNRP) — term_document.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "term",
+    "protocol",
+    "case_ref",
+    "procedure_ref",
+    "generation",
+    "output",
+    "integrity"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Versão do schema (semver).",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+
+    "term": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["term_id", "artifact_type", "status", "created_at"],
+      "properties": {
+        "term_id": {
+          "type": "string",
+          "description": "ID do termo (UUID recomendado).",
+          "minLength": 8
+        },
+        "artifact_type": {
+          "type": "string",
+          "const": "TERMO"
+        },
+        "status": {
+          "type": "string",
+          "description": "Estado do documento no fluxo interno.",
+          "enum": ["DRAFT", "FINAL", "CANCELLED"]
+        },
+        "created_at": { "type": "string", "format": "date-time" },
+        "created_by": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["actor_id", "actor_role"],
+          "properties": {
+            "actor_id": { "type": "string", "minLength": 3 },
+            "actor_role": {
+              "type": "string",
+              "enum": [
+                "CONDUTOR",
+                "ESCRIVAO",
+                "AUTORIDADE_POLICIAL",
+                "PERITO",
+                "PAPILOSCOPISTA",
+                "ADMIN_TECNICO",
+                "SISTEMA"
+              ]
+            },
+            "unit": { "type": "string" }
+          }
+        },
+        "language": { "type": "string", "default": "pt-BR" },
+        "notes": { "type": "string" }
+      }
+    },
+
+    "protocol": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "portaria", "annex", "ruleset_version"],
+      "properties": {
+        "name": { "type": "string" },
+        "portaria": { "type": "string" },
+        "annex": { "type": "string" },
+        "ruleset_version": {
+          "type": "string",
+          "description": "Tag/versão do rules.json aplicado (rastreabilidade normativa)."
+        }
+      }
+    },
+
+    "case_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["case_id", "agency", "procedure_number"],
+      "properties": {
+        "case_id": { "type": "string", "minLength": 6 },
+        "agency": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "unit"],
+          "properties": {
+            "name": { "type": "string" },
+            "unit": { "type": "string" },
+            "uf": { "type": "string", "minLength": 2, "maxLength": 2 }
+          }
+        },
+        "procedure_type": { "type": "string", "enum": ["IP", "TC", "BO", "APF", "PA", "OUTRO"] },
+        "procedure_number": { "type": "string", "minLength": 1 },
+        "secrecy_level": { "type": "string", "enum": ["PUBLICO", "RESTRITO", "SIGILOSO"] }
+      }
+    },
+
+    "procedure_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["modality", "lineup_mode", "started_at", "ended_at", "timezone"],
+      "properties": {
+        "modality": { "type": "string", "enum": ["PRESENCIAL", "FOTOGRAFICO", "VOZ"] },
+        "lineup_mode": { "type": "string", "enum": ["SIMULTANEO", "SEQUENCIAL"] },
+        "started_at": { "type": "string", "format": "date-time" },
+        "ended_at": { "type": "string", "format": "date-time" },
+        "timezone": { "type": "string" },
+        "location": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": { "type": "string", "enum": ["DELEGACIA", "OUTRO_AMBIENTE_CONTROLADO", "REMOTO_CONTROLADO"] },
+            "description": { "type": "string" }
+          }
+        }
+      }
+    },
+
+    "links": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Referências cruzadas para rastreabilidade do pacote completo.",
+      "properties": {
+        "recognition_case_ref": { "$ref": "#/$defs/artifact_ref" },
+        "procedure_manifest_ref": { "$ref": "#/$defs/artifact_ref" },
+        "checklist_result_ref": { "$ref": "#/$defs/artifact_ref" }
+      }
+    },
+
+    "generation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["generator", "template", "inputs"],
+      "properties": {
+        "generator": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["generator_id", "generator_version", "engine"],
+          "properties": {
+            "generator_id": { "type": "string" },
+            "generator_version": { "type": "string" },
+            "engine": {
+              "type": "string",
+              "description": "Motor usado (ex.: markdown_to_pdf, docx_to_pdf)."
+            }
+          }
+        },
+        "template": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["template_id", "template_version", "template_path"],
+          "properties": {
+            "template_id": { "type": "string" },
+            "template_version": { "type": "string" },
+            "template_path": { "type": "string" }
+          }
+        },
+        "inputs": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["recognition_case_hash_sha256", "procedure_manifest_hash_sha256"],
+          "properties": {
+            "recognition_case_hash_sha256": { "$ref": "#/$defs/hash_sha256" },
+            "procedure_manifest_hash_sha256": { "$ref": "#/$defs/hash_sha256" },
+            "checklist_result_hash_sha256": { "$ref": "#/$defs/hash_sha256" }
+          }
+        },
+        "render_warnings": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+
+    "output": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["format", "mime_type", "storage_ref"],
+      "properties": {
+        "format": { "type": "string", "enum": ["PDF", "DOCX", "HTML", "MD"] },
+        "mime_type": { "type": "string" },
+        "filename": { "type": "string" },
+        "storage_ref": {
+          "type": "string",
+          "description": "Referência interna ao arquivo (não publicar valores reais em repo público).",
+          "minLength": 3
+        },
+        "size_bytes": { "type": "integer", "minimum": 0 }
+      }
+    },
+
+    "integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["hash_algorithm", "document_hash_sha256"],
+      "properties": {
+        "hash_algorithm": { "type": "string", "const": "SHA-256" },
+        "document_hash_sha256": { "$ref": "#/$defs/hash_sha256" },
+        "canonicalization": {
+          "type": "string",
+          "description": "Opcional: descrição do método de canonicalização usado para hashing (se aplicável)."
+        }
+      }
+    },
+
+    "signatures": {
+      "type": "array",
+      "description": "Assinaturas (humanas ou do sistema) sobre o termo e/ou pacote.",
+      "items": { "$ref": "#/$defs/signature" }
+    },
+
+    "pii_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Política aplicada ao termo (para governança e publicações).",
+      "properties": {
+        "pii_level": { "type": "string", "enum": ["REDACTED", "MINIMAL", "FULL_INTERNAL"] },
+        "redacted_for_public_repo": { "type": "boolean" }
+      }
+    }
+  },
+
+  "$defs": {
+    "hash_sha256": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "artifact_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifact_type"],
+      "properties": {
+        "artifact_type": {
+          "type": "string",
+          "enum": [
+            "VIDEO",
+            "AUDIO",
+            "TERMO",
+            "CHECKLIST",
+            "PACOTE_ALINHAMENTO_IMAGENS",
+            "PACOTE_ALINHAMENTO_AUDIO",
+            "PACOTE_ALINHAMENTO_PRESENCIAL",
+            "ARQUIVOS_IA_GERACAO",
+            "MANIFESTO",
+            "OUTRO"
+          ]
+        },
+        "artifact_id": { "type": "string" },
+        "storage_ref": { "type": "string" },
+        "hash_sha256": { "$ref": "#/$defs/hash_sha256" },
+        "notes": { "type": "string" }
+      }
+    },
+    "signature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["signature_id", "signed_at", "signer", "scope", "signature_format", "signature_value"],
+      "properties": {
+        "signature_id": { "type": "string", "minLength": 6 },
+        "signed_at": { "type": "string", "format": "date-time" },
+        "signer": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["signer_id", "role"],
+          "properties": {
+            "signer_id": { "type": "string" },
+            "role": {
+              "type": "string",
+              "enum": ["CONDUTOR", "ESCRIVAO", "AUTORIDADE_POLICIAL", "PERITO", "ADMIN_TECNICO", "SISTEMA"]
+            },
+            "certificate_ref": { "type": "string" }
+          }
+        },
+        "scope": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["covers"],
+          "properties": {
+            "covers": {
+              "type": "string",
+              "enum": ["TERM_ONLY", "TERM_AND_SELECTED_ARTIFACTS", "PACKAGE"]
+            },
+            "artifact_ids": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Obrigatório se covers = TERM_AND_SELECTED_ARTIFACTS."
+            }
+          }
+        },
+        "signature_format": {
+          "type": "string",
+          "enum": ["CMS_PKCS7", "JWS", "PADES", "XADES", "INTERNAL"]
+        },
+        "signature_value": {
+          "type": "string",
+          "description": "Assinatura codificada (base64/compact JWS/etc.)."
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "scope": { "properties": { "covers": { "const": "TERM_AND_SELECTED_ARTIFACTS" } } } } },
+          "then": { "properties": { "scope": { "required": ["artifact_ids"] } } }
+        }
+      ]
+    }
+  }
+}

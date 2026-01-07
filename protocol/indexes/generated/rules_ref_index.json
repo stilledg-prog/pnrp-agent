@@ -1,0 +1,286 @@
+{
+  "index_id": "rules_ref_index_pnrp",
+  "index_version": "0.1.0",
+  "generated_at": "2026-01-07T00:00:00-03:00",
+  "protocol": {
+    "name": "Protocolo Nacional de Reconhecimento de Pessoas (PNRP)",
+    "portaria": "MJSP nº 1122/2026",
+    "ruleset_version": "v0.1.0"
+  },
+  "conventions": {
+    "location_format": "path + anchor",
+    "anchor_examples": [
+      "sections[S2].rules_ref",
+      "items[C1.1]",
+      "heading:## 4) Preparação do alinhamento",
+      "template_block:## 5. RESULTADO",
+      "schema_field:/properties/procedure_ref"
+    ],
+    "note": "Este índice é para rastreabilidade interna. Não incluir dados pessoais."
+  },
+  "by_rule": {
+    "PR-006": [
+      {
+        "asset_type": "guide",
+        "path": "guides/operacao_presencial.md",
+        "anchor": "heading:## 2.2 Registro do procedimento",
+        "kind": "requirement",
+        "excerpt_hint": "registro audiovisual integral / termo"
+      },
+      {
+        "asset_type": "guide",
+        "path": "guides/operacao_fotografico.md",
+        "anchor": "heading:## 2.2 Registro obrigatório",
+        "kind": "requirement",
+        "excerpt_hint": "gravação integral e termo"
+      },
+      {
+        "asset_type": "form",
+        "path": "templates/forms/presencial.form.json",
+        "anchor": "sections[S6].rules_ref",
+        "kind": "field_group"
+      },
+      {
+        "asset_type": "form",
+        "path": "templates/forms/fotografico.form.json",
+        "anchor": "sections[S7].rules_ref",
+        "kind": "field_group"
+      },
+      {
+        "asset_type": "checklist",
+        "path": "checklists/avaliacao.checklist.json",
+        "anchor": "sections[C8].rules_ref",
+        "kind": "checklist_section"
+      }
+    ],
+    "PR-014": [
+      {
+        "asset_type": "form",
+        "path": "templates/forms/presencial.form.json",
+        "anchor": "sections[S2].rules_ref",
+        "kind": "field_group"
+      },
+      {
+        "asset_type": "form",
+        "path": "templates/forms/fotografico.form.json",
+        "anchor": "sections[S3].rules_ref",
+        "kind": "field_group"
+      },
+      {
+        "asset_type": "checklist",
+        "path": "checklists/avaliacao.checklist.json",
+        "anchor": "sections[C1].rules_ref",
+        "kind": "checklist_section"
+      }
+    ],
+    "PR-024": [
+      {
+        "asset_type": "form",
+        "path": "templates/forms/presencial.form.json",
+        "anchor": "sections[S3].rules_ref",
+        "kind": "field_group"
+      },
+      {
+        "asset_type": "checklist",
+        "path": "checklists/avaliacao.checklist.json",
+        "anchor": "sections[C2].rules_ref",
+        "kind": "checklist_section"
+      },
+      {
+        "asset_type": "guide",
+        "path": "guides/operacao_presencial.md",
+        "anchor": "heading:## 3) Instruções formais ao reconhecedor",
+        "kind": "requirement"
+      }
+    ],
+    "PR-037": [
+      {
+        "asset_type": "form",
+        "path": "templates/forms/fotografico.form.json",
+        "anchor": "sections[S2].rules_ref",
+        "kind": "field_group"
+      },
+      {
+        "asset_type": "checklist",
+        "path": "checklists/avaliacao.checklist.json",
+        "anchor": "items[C5.1]",
+        "kind": "checklist_item"
+      },
+      {
+        "asset_type": "guide",
+        "path": "guides/operacao_fotografico.md",
+        "anchor": "heading:## 1) Regra de admissibilidade",
+        "kind": "requirement"
+      }
+    ],
+    "PR-042": [
+      {
+        "asset_type": "form",
+        "path": "templates/forms/fotografico.form.json",
+        "anchor": "sections[S5].rules_ref",
+        "kind": "field_group"
+      },
+      {
+        "asset_type": "checklist",
+        "path": "checklists/avaliacao.checklist.json",
+        "anchor": "sections[C3].rules_ref",
+        "kind": "checklist_section"
+      },
+      {
+        "asset_type": "guide",
+        "path": "guides/operacao_fotografico.md",
+        "anchor": "heading:## 4) Diretrizes técnicas do alinhamento fotográfico",
+        "kind": "requirement"
+      }
+    ],
+    "IA-001": [
+      {
+        "asset_type": "form",
+        "path": "templates/forms/fotografico.form.json",
+        "anchor": "sections[S6].rules_ref",
+        "kind": "field_group"
+      },
+      {
+        "asset_type": "checklist",
+        "path": "checklists/avaliacao.checklist.json",
+        "anchor": "sections[C6].rules_ref",
+        "kind": "checklist_section"
+      },
+      {
+        "asset_type": "guide",
+        "path": "guides/ia_manual.md",
+        "anchor": "heading:## 1) Escopo e finalidade do uso de IA",
+        "kind": "requirement"
+      }
+    ],
+    "CA-001": [
+      {
+        "asset_type": "checklist",
+        "path": "checklists/avaliacao.checklist.json",
+        "anchor": "sections[C9].rules_ref",
+        "kind": "checklist_section"
+      },
+      {
+        "asset_type": "guide",
+        "path": "guides/ia_manual.md",
+        "anchor": "heading:## 6) Regras protetivas — Crianças e adolescentes",
+        "kind": "requirement"
+      }
+    ]
+  },
+  "by_asset": {
+    "guides/operacao_presencial.md": [
+      {
+        "rule_id": "PR-006",
+        "anchor": "heading:## 2.2 Registro do procedimento"
+      },
+      {
+        "rule_id": "PR-024",
+        "anchor": "heading:## 3) Instruções formais ao reconhecedor"
+      }
+    ],
+    "guides/operacao_fotografico.md": [
+      {
+        "rule_id": "PR-037",
+        "anchor": "heading:## 1) Regra de admissibilidade"
+      },
+      {
+        "rule_id": "PR-042",
+        "anchor": "heading:## 4) Diretrizes técnicas do alinhamento fotográfico"
+      },
+      {
+        "rule_id": "PR-006",
+        "anchor": "heading:## 2.2 Registro obrigatório"
+      }
+    ],
+    "guides/ia_manual.md": [
+      {
+        "rule_id": "IA-001",
+        "anchor": "heading:## 1) Escopo e finalidade do uso de IA"
+      },
+      {
+        "rule_id": "CA-001",
+        "anchor": "heading:## 6) Regras protetivas — Crianças e adolescentes"
+      }
+    ],
+    "templates/forms/presencial.form.json": [
+      {
+        "rule_id": "PR-014",
+        "anchor": "sections[S2].rules_ref"
+      },
+      {
+        "rule_id": "PR-024",
+        "anchor": "sections[S3].rules_ref"
+      },
+      {
+        "rule_id": "PR-006",
+        "anchor": "sections[S6].rules_ref"
+      }
+    ],
+    "templates/forms/fotografico.form.json": [
+      {
+        "rule_id": "PR-037",
+        "anchor": "sections[S2].rules_ref"
+      },
+      {
+        "rule_id": "PR-014",
+        "anchor": "sections[S3].rules_ref"
+      },
+      {
+        "rule_id": "PR-042",
+        "anchor": "sections[S5].rules_ref"
+      },
+      {
+        "rule_id": "IA-001",
+        "anchor": "sections[S6].rules_ref"
+      },
+      {
+        "rule_id": "PR-006",
+        "anchor": "sections[S7].rules_ref"
+      }
+    ],
+    "checklists/avaliacao.checklist.json": [
+      {
+        "rule_id": "PR-014",
+        "anchor": "sections[C1].rules_ref"
+      },
+      {
+        "rule_id": "PR-024",
+        "anchor": "sections[C2].rules_ref"
+      },
+      {
+        "rule_id": "PR-042",
+        "anchor": "sections[C3].rules_ref"
+      },
+      {
+        "rule_id": "PR-037",
+        "anchor": "sections[C5].rules_ref"
+      },
+      {
+        "rule_id": "IA-001",
+        "anchor": "sections[C6].rules_ref"
+      },
+      {
+        "rule_id": "CA-001",
+        "anchor": "sections[C9].rules_ref"
+      },
+      {
+        "rule_id": "PR-006",
+        "anchor": "sections[C8].rules_ref"
+      }
+    ]
+  },
+  "maintenance": {
+    "generation_mode": "AUTO",
+    "suggested_script": "tools/build_rules_ref_index.py",
+    "update_on": [
+      "changes_to_rules_json",
+      "changes_to_forms",
+      "changes_to_checklists",
+      "changes_to_guides",
+      "changes_to_templates",
+      "changes_to_schemas"
+    ],
+    "notes": "A versão 0.1.0 contém apenas um subconjunto de regras exemplificadas; ao consolidar o rules.json completo, expandir by_rule e by_asset para 100% de cobertura."
+  }
+}

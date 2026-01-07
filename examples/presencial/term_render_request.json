@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0.0",
+  "request": {
+    "request_id": "TERMREQ-DEMO-PRESENCIAL",
+    "requested_at": "2026-01-07T12:00:00Z",
+    "requested_by": {
+      "actor_id": "AUTORIDADE (REDACTED)",
+      "actor_role": "CONDUTOR"
+    },
+    "modality": "PRESENCIAL"
+  },
+  "protocol": {
+    "name": "Protocolo Nacional de Reconhecimento de Pessoas (PNRP)",
+    "portaria": "MJSP nº 1122/2026",
+    "ruleset_version": "v0.1.0"
+  },
+  "render": {
+    "engine": "markdown_to_pdf",
+    "template": {
+      "template_id": "termo",
+      "template_version": "v0.1.0",
+      "template_path": "templates/termo/termo_presencial.template.md"
+    }
+  },
+  "inputs": {
+    "recognition_case": {
+      "type": "recognition_case.json",
+      "source": {
+        "mode": "FILE_PATH",
+        "file_path": "examples/presencial/recognition_case.json"
+      }
+    },
+    "procedure_manifest": {
+      "type": "procedure_manifest.json",
+      "source": {
+        "mode": "FILE_PATH",
+        "file_path": "examples/presencial/procedure_manifest.json"
+      }
+    }
+  },
+  "output": {
+    "format": "PDF",
+    "mime_type": "application/pdf",
+    "target": {
+      "storage_backend": "FILESYSTEM_INTERNAL"
+    }
+  }
+}

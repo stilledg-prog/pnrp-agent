@@ -1,0 +1,227 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/term_render_request.schema.json",
+  "title": "Term Render Request (PNRP) — term_render_request.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "request",
+    "protocol",
+    "render",
+    "inputs",
+    "output"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Versão do schema (semver).",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["request_id", "requested_at", "requested_by", "modality"],
+      "properties": {
+        "request_id": {
+          "type": "string",
+          "description": "ID da solicitação (UUID recomendado).",
+          "minLength": 8
+        },
+        "requested_at": { "type": "string", "format": "date-time" },
+        "requested_by": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["actor_id", "actor_role"],
+          "properties": {
+            "actor_id": { "type": "string", "minLength": 3 },
+            "actor_role": {
+              "type": "string",
+              "enum": [
+                "CONDUTOR",
+                "ESCRIVAO",
+                "AUTORIDADE_POLICIAL",
+                "PERITO",
+                "PAPILOSCOPISTA",
+                "ADMIN_TECNICO",
+                "SISTEMA"
+              ]
+            },
+            "unit": { "type": "string" }
+          }
+        },
+        "modality": { "type": "string", "enum": ["PRESENCIAL", "FOTOGRAFICO", "VOZ"] },
+        "language": { "type": "string", "default": "pt-BR" },
+        "notes": { "type": "string" }
+      }
+    },
+
+    "protocol": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "portaria", "ruleset_version"],
+      "properties": {
+        "name": { "type": "string" },
+        "portaria": { "type": "string" },
+        "annex": { "type": "string" },
+        "ruleset_version": { "type": "string" }
+      }
+    },
+
+    "render": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["engine", "template"],
+      "properties": {
+        "engine": {
+          "type": "string",
+          "description": "Motor de renderização.",
+          "enum": ["markdown_to_pdf", "docx_to_pdf", "html_to_pdf"]
+        },
+        "template": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["template_id", "template_version", "template_path"],
+          "properties": {
+            "template_id": { "type": "string" },
+            "template_version": { "type": "string" },
+            "template_path": { "type": "string" }
+          }
+        },
+        "placeholders": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "syntax": { "type": "string", "default": "${...}" },
+            "missing_value_behavior": {
+              "type": "string",
+              "enum": ["error_on_required_else_blank", "blank_all_missing", "error_all_missing"]
+            }
+          }
+        },
+        "validation_behavior": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "fail_on_missing_minimum_fields": { "type": "boolean", "default": true },
+            "fail_on_schema_validation_error": { "type": "boolean", "default": true },
+            "warnings_as_errors": { "type": "boolean", "default": false }
+          }
+        }
+      }
+    },
+
+    "inputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["recognition_case", "procedure_manifest"],
+      "properties": {
+        "recognition_case": { "$ref": "#/$defs/input_ref" },
+        "procedure_manifest": { "$ref": "#/$defs/input_ref" },
+        "checklist_result": { "$ref": "#/$defs/input_ref" }
+      }
+    },
+
+    "output": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["format", "mime_type", "target"],
+      "properties": {
+        "format": { "type": "string", "enum": ["PDF", "DOCX", "HTML", "MD"] },
+        "mime_type": { "type": "string" },
+        "file_naming": {
+          "type": "string",
+          "description": "Padrão de nome (ex.: TERMO_${case_id}_${modality}_${started_at}.pdf)."
+        },
+        "target": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["storage_backend"],
+          "properties": {
+            "storage_backend": {
+              "type": "string",
+              "description": "Destino interno (ex.: ECM, SEI, S3 interno).",
+              "enum": ["ECM", "SEI", "S3_INTERNAL", "FILESYSTEM_INTERNAL", "OTHER"]
+            },
+            "storage_ref_prefix": { "type": "string" },
+            "content_classification": { "type": "string", "enum": ["SENSIVEL", "RESTRITO", "PUBLICAVEL"] }
+          }
+        }
+      }
+    },
+
+    "pii_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Política aplicada ao output do termo.",
+      "properties": {
+        "pii_level": { "type": "string", "enum": ["REDACTED", "MINIMAL", "FULL_INTERNAL"], "default": "FULL_INTERNAL" },
+        "redacted_for_public_repo": { "type": "boolean", "default": true },
+        "redaction_rules_ref": {
+          "type": "string",
+          "description": "Referência a um conjunto de regras de tarja/anonimização (opcional)."
+        }
+      }
+    },
+
+    "manifest_update": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Opcional: instruções para registrar o termo no procedure_manifest (campos e hash).",
+      "properties": {
+        "enabled": { "type": "boolean", "default": true },
+        "artifact_type": { "type": "string", "const": "TERMO" },
+        "write_storage_ref_to": { "type": "string", "description": "JSONPath interno (ex.: /evidence/term/storage_ref)." },
+        "write_hash_to": { "type": "string", "description": "JSONPath interno (ex.: /evidence/term/hash_sha256)." }
+      }
+    }
+  },
+
+  "$defs": {
+    "hash_sha256": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "input_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "source"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["recognition_case.json", "procedure_manifest.json", "checklist_result.json"]
+        },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mode"],
+          "properties": {
+            "mode": { "type": "string", "enum": ["INLINE", "STORAGE_REF", "FILE_PATH"] },
+            "inline": { "type": "object", "description": "JSON embutido (uso controlado)." },
+            "storage_ref": { "type": "string", "description": "Referência a cofre/ECM/SEI/S3 interno." },
+            "file_path": { "type": "string", "description": "Caminho local (ambiente interno)." }
+          },
+          "allOf": [
+            {
+              "if": { "properties": { "mode": { "const": "INLINE" } } },
+              "then": { "required": ["inline"] }
+            },
+            {
+              "if": { "properties": { "mode": { "const": "STORAGE_REF" } } },
+              "then": { "required": ["storage_ref"] }
+            },
+            {
+              "if": { "properties": { "mode": { "const": "FILE_PATH" } } },
+              "then": { "required": ["file_path"] }
+            }
+          ]
+        },
+        "hash_sha256": {
+          "$ref": "#/$defs/hash_sha256",
+          "description": "Opcional: hash conhecido do input para verificação de integridade."
+        }
+      }
+    }
+  }
+}

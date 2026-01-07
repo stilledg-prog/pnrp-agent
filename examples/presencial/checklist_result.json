@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.0.0",
+  "checklist": {
+    "checklist_id": "avaliacao",
+    "checklist_version": "0.1.0",
+    "protocol": {
+      "name": "Protocolo Nacional de Reconhecimento de Pessoas (PNRP)",
+      "portaria": "MJSP nº 1122/2026",
+      "annex": "Anexo II",
+      "ruleset_version": "v0.1.0"
+    }
+  },
+  "case_ref": {
+    "case_id": "CASE-DEMO-0001",
+    "agency": {
+      "name": "Polícia Civil - DEMO",
+      "unit": "Unidade DEMO"
+    },
+    "procedure_number": "0000000/2026"
+  },
+  "procedure_ref": {
+    "modality": "PRESENCIAL",
+    "lineup_mode": "SIMULTANEO",
+    "started_at": "2026-01-07T12:00:00Z",
+    "ended_at": "2026-01-07T12:15:00Z",
+    "timezone": "America/Sao_Paulo"
+  },
+  "completed": {
+    "completed_at": "2026-01-07T12:00:00Z",
+    "completed_by": {
+      "actor_id": "AUTORIDADE (REDACTED)",
+      "actor_role": "CONDUTOR"
+    }
+  },
+  "items": [
+    {
+      "item_id": "C1.1",
+      "severity": "INFO",
+      "answer": "SIM"
+    },
+    {
+      "item_id": "C2.1",
+      "severity": "LOW",
+      "answer": "NAO_APLICA"
+    }
+  ],
+  "summary": {
+    "overall": "CONFORME",
+    "counts": {
+      "total_items": 2,
+      "answered_items": 2,
+      "failures_by_severity": {
+        "CRITICAL": 0,
+        "HIGH": 0,
+        "MEDIUM": 0,
+        "LOW": 0,
+        "INFO": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,656 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/recognition_case.schema.json",
+  "title": "Recognition Case (PNRP) — recognition_case.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "protocol",
+    "case",
+    "procedure",
+    "participants",
+    "pre_interview",
+    "instructions",
+    "lineup",
+    "result",
+    "evidence",
+    "audit"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Versão do schema (semver).",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "protocol": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "source", "ruleset_version"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "Protocolo Nacional de Reconhecimento de Pessoas (PNRP)"
+        },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["portaria", "annex"],
+          "properties": {
+            "portaria": { "type": "string", "description": "Identificador da portaria (ex.: 'MJSP nº 1122/2026')." },
+            "annex": { "type": "string", "description": "Anexo aplicável (ex.: 'Anexo I + II + III + IV + V')." },
+            "sei": { "type": "string", "description": "Opcional: SEI do documento." }
+          }
+        },
+        "ruleset_version": {
+          "type": "string",
+          "description": "Versão/tag do rules.json em uso (para rastreabilidade)."
+        }
+      }
+    },
+
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["case_id", "agency", "procedure_ref"],
+      "properties": {
+        "case_id": {
+          "type": "string",
+          "description": "Identificador interno/UUID do caso de reconhecimento.",
+          "minLength": 6
+        },
+        "agency": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "unit"],
+          "properties": {
+            "name": { "type": "string", "description": "Órgão/Instituição." },
+            "unit": { "type": "string", "description": "Unidade/Delegacia/Setor." },
+            "uf": { "type": "string", "description": "UF (opcional).", "minLength": 2, "maxLength": 2 }
+          }
+        },
+        "procedure_ref": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "number"],
+          "properties": {
+            "type": {
+              "type": "string",
+              "description": "Tipo do procedimento policial/judicial.",
+              "enum": ["IP", "TC", "BO", "APF", "PA", "OUTRO"]
+            },
+            "number": { "type": "string", "description": "Número do procedimento (sem validação de formato)." },
+            "secrecy_level": {
+              "type": "string",
+              "description": "Grau de sigilo (para governança interna).",
+              "enum": ["PUBLICO", "RESTRITO", "SIGILOSO"]
+            }
+          }
+        }
+      }
+    },
+
+    "procedure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["modality", "date_time", "location", "lineup_mode"],
+      "properties": {
+        "modality": {
+          "type": "string",
+          "description": "Modalidade do reconhecimento.",
+          "enum": ["PRESENCIAL", "FOTOGRAFICO", "VOZ"]
+        },
+        "lineup_mode": {
+          "type": "string",
+          "description": "Modo de apresentação do alinhamento.",
+          "enum": ["SIMULTANEO", "SEQUENCIAL"]
+        },
+        "date_time": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["started_at", "ended_at", "timezone"],
+          "properties": {
+            "started_at": { "type": "string", "format": "date-time" },
+            "ended_at": { "type": "string", "format": "date-time" },
+            "timezone": { "type": "string", "description": "IANA TZ (ex.: America/Sao_Paulo)." }
+          }
+        },
+        "location": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "description"],
+          "properties": {
+            "type": { "type": "string", "enum": ["DELEGACIA", "OUTRO_AMBIENTE_CONTROLADO", "REMOTO_CONTROLADO"] },
+            "description": { "type": "string", "minLength": 3 }
+          }
+        },
+        "double_blind": {
+          "type": "boolean",
+          "description": "Indica adoção do procedimento duplo-cego (quando possível)."
+        },
+        "justification": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "reason_objective_basis": {
+              "type": "string",
+              "description": "Fundamentação objetiva para submeter a pessoa ao reconhecimento."
+            },
+            "photo_modality_reason": {
+              "type": "string",
+              "description": "Justificativa formal da impossibilidade do presencial (apenas quando FOTOGRAFICO)."
+            }
+          }
+        }
+      }
+    },
+
+    "participants": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["recognizer", "subject", "conductor"],
+      "properties": {
+        "recognizer": { "$ref": "#/$defs/person_role" },
+        "subject": { "$ref": "#/$defs/person_role" },
+        "conductor": { "$ref": "#/$defs/person_role" },
+        "investigation_agent": { "$ref": "#/$defs/person_role" },
+        "defense": { "$ref": "#/$defs/person_role" },
+        "technical_support": { "$ref": "#/$defs/person_role" }
+      }
+    },
+
+    "pre_interview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["was_conducted", "free_description", "visibility_conditions", "prior_knowledge", "race_color"],
+      "properties": {
+        "was_conducted": { "type": "boolean" },
+
+        "free_description": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["narrative"],
+          "properties": {
+            "narrative": { "type": "string", "description": "Relato livre/espontâneo obtido por perguntas abertas.", "minLength": 1 },
+            "physical_attributes": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "sex": { "type": "string" },
+                "estimated_age": { "type": "integer", "minimum": 0 },
+                "height_estimated_cm": { "type": "integer", "minimum": 0 },
+                "build": { "type": "string" },
+                "face_shape": { "type": "string" },
+                "eye_color": { "type": "string" },
+                "skin_tone": { "type": "string" },
+                "hair": { "type": "string" },
+                "distinct_marks": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "description": "Cicatrizes, tatuagens, marcas, óculos, acessórios etc."
+                },
+                "behavioral_linguistic": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "description": "Sotaque, gírias, modo de andar, gestos, expressões faciais."
+                }
+              }
+            }
+          }
+        },
+
+        "visibility_conditions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["time_seen_seconds", "distance_meters", "lighting", "angle", "time_of_day"],
+          "properties": {
+            "time_seen_seconds": { "type": "number", "minimum": 0 },
+            "distance_meters": { "type": "number", "minimum": 0 },
+            "lighting": { "type": "string", "description": "Descrição da iluminação no momento do fato." },
+            "angle": { "type": "string", "description": "Ângulo de visão e condições do local." },
+            "time_of_day": { "type": "string", "description": "Hora estimada dos fatos." },
+            "other_factors": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+
+        "prior_knowledge": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["knew_before", "prior_image_exposure"],
+          "properties": {
+            "knew_before": { "type": "boolean", "description": "Indica se reconhecedor já conhecia a pessoa." },
+            "prior_image_exposure": {
+              "type": "boolean",
+              "description": "Indica contato anterior com imagens/informações/relatos sobre a pessoa ou fatos."
+            },
+            "exposure_details": { "type": "string" }
+          }
+        },
+
+        "race_color": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["recognizer_self", "subject_self", "recognizer_perception_of_subject"],
+          "properties": {
+            "recognizer_self": { "$ref": "#/$defs/ibge_race_color" },
+            "subject_self": { "$ref": "#/$defs/ibge_race_color" },
+            "recognizer_perception_of_subject": { "$ref": "#/$defs/ibge_race_color" }
+          }
+        },
+
+        "anti_suggestion": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "questions_open_ended": { "type": "boolean", "description": "Confirma uso de perguntas abertas/relato livre." },
+            "no_inductive_questions": { "type": "boolean", "description": "Confirma ausência de questões indutivas." }
+          }
+        }
+      }
+    },
+
+    "instructions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["delivered", "items"],
+      "properties": {
+        "delivered": { "type": "boolean" },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/instruction_item" },
+          "description": "Itens de advertência formal prestados ao reconhecedor."
+        }
+      }
+    },
+
+    "lineup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["count_total", "count_fillers", "showup", "reused_subject", "composition_notes"],
+      "properties": {
+        "count_total": { "type": "integer", "minimum": 1 },
+        "count_fillers": { "type": "integer", "minimum": 0 },
+        "showup": { "type": "boolean", "description": "Indica se houve apresentação isolada (deve ser false salvo justificativa excepcional, quando admissível)." },
+        "reused_subject": {
+          "type": "boolean",
+          "description": "Indica se o mesmo reconhecido foi reapresentado ao mesmo reconhecedor (vedado salvo justificativa excepcional no presencial)."
+        },
+        "positioning_varied": {
+          "type": "boolean",
+          "description": "No presencial, indica se o posicionamento variou a cada ato."
+        },
+        "composition_notes": {
+          "type": "string",
+          "description": "Notas sobre isonomia visual, semelhança dos fillers, fenótipo, vestuário, etc."
+        },
+
+        "presential": { "$ref": "#/$defs/presential_lineup" },
+        "photographic": { "$ref": "#/$defs/photo_lineup" },
+        "voice": { "$ref": "#/$defs/voice_lineup" }
+      }
+    },
+
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["outcome", "certainty_statement"],
+      "properties": {
+        "outcome": {
+          "type": "string",
+          "enum": ["RECONHECEU_COM_CERTEZA", "RECONHECEU_COM_DUVIDA", "NAO_RECONHECEU", "RECONHECIMENTO_PARCIAL"]
+        },
+        "certainty_statement": {
+          "type": "string",
+          "description": "Declaração literal do grau de certeza, em palavras próprias.",
+          "minLength": 1
+        },
+        "recognized_position": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Posição no alinhamento (quando aplicável)."
+        },
+        "recognized_item_id": {
+          "type": "string",
+          "description": "Identificador do item reconhecido (imagem/áudio/pessoa) no conjunto apresentado."
+        },
+        "no_feedback_provided": {
+          "type": "boolean",
+          "description": "Confirma ausência de feedback sugestivo sobre coincidência com expectativa da investigação."
+        }
+      }
+    },
+
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["video", "term", "lineup_package", "custody"],
+      "properties": {
+        "video": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["exists", "storage_ref"],
+          "properties": {
+            "exists": { "type": "boolean" },
+            "storage_ref": {
+              "type": "string",
+              "description": "Referência interna ao arquivo de vídeo (ex.: URI de cofre interno)."
+            },
+            "hash_sha256": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" },
+            "recording_notes": { "type": "string" }
+          }
+        },
+        "term": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["exists", "storage_ref"],
+          "properties": {
+            "exists": { "type": "boolean" },
+            "storage_ref": { "type": "string", "description": "Referência ao termo lavrado (PDF/DOCX/HTML) em ambiente interno." },
+            "hash_sha256": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" }
+          }
+        },
+        "lineup_package": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["storage_ref"],
+          "properties": {
+            "storage_ref": { "type": "string", "description": "Referência ao pacote do alinhamento (imagens/áudios/metadados) no ambiente interno." },
+            "hash_sha256": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" }
+          }
+        },
+        "custody": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["events"],
+          "properties": {
+            "events": {
+              "type": "array",
+              "minItems": 1,
+              "items": { "$ref": "#/$defs/custody_event" },
+              "description": "Eventos de cadeia de custódia (append-only)."
+            }
+          }
+        }
+      }
+    },
+
+    "audit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["created_at", "created_by", "software", "protocol_version"],
+      "properties": {
+        "created_at": { "type": "string", "format": "date-time" },
+        "created_by": { "type": "string", "description": "Identificador do operador/sistema (sem PII obrigatória)." },
+        "updated_at": { "type": "string", "format": "date-time" },
+        "software": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["agent_name", "agent_version"],
+          "properties": {
+            "agent_name": { "type": "string" },
+            "agent_version": { "type": "string" }
+          }
+        },
+        "protocol_version": {
+          "type": "string",
+          "description": "Tag git/versão do repertório normativo (ex.: v0.1.0)."
+        }
+      }
+    }
+  },
+
+  "allOf": [
+    {
+      "if": { "properties": { "procedure": { "properties": { "modality": { "const": "PRESENCIAL" } } } } },
+      "then": {
+        "properties": {
+          "lineup": {
+            "required": ["presential"],
+            "properties": {
+              "count_total": { "minimum": 5 },
+              "count_fillers": { "minimum": 4 }
+            }
+          },
+          "procedure": {
+            "properties": {
+              "justification": {
+                "properties": { "photo_modality_reason": { "maxLength": 0 } }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "procedure": { "properties": { "modality": { "const": "FOTOGRAFICO" } } } } },
+      "then": {
+        "properties": {
+          "lineup": {
+            "required": ["photographic"],
+            "properties": {
+              "count_total": { "minimum": 5 },
+              "count_fillers": { "minimum": 4 }
+            }
+          },
+          "procedure": {
+            "properties": {
+              "justification": {
+                "required": ["photo_modality_reason"]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "procedure": { "properties": { "modality": { "const": "VOZ" } } } } },
+      "then": {
+        "properties": {
+          "lineup": {
+            "required": ["voice"],
+            "properties": {
+              "count_total": { "minimum": 5 }
+            }
+          }
+        }
+      }
+    }
+  ],
+
+  "$defs": {
+    "ibge_race_color": {
+      "type": "string",
+      "enum": ["amarelo", "branco", "indigena", "pardo", "preto"]
+    },
+
+    "person_role": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "identity"],
+      "properties": {
+        "role": {
+          "type": "string",
+          "enum": [
+            "VITIMA",
+            "TESTEMUNHA",
+            "RECONHECEDOR",
+            "RECONHECIDO",
+            "CONDUTOR",
+            "AGENTE_INVESTIGACAO",
+            "DEFENSOR",
+            "ADVOGADO",
+            "PERITO",
+            "PAPILOSCOPISTA",
+            "OUTRO"
+          ]
+        },
+        "identity": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["pii_level", "display_name"],
+          "properties": {
+            "pii_level": {
+              "type": "string",
+              "description": "Grau de exposição de dados pessoais no registro (recomendado: REDACTED no repositório público).",
+              "enum": ["REDACTED", "MINIMAL", "FULL_INTERNAL"]
+            },
+            "display_name": { "type": "string", "description": "Nome para exibição (pode ser pseudônimo/ID interno)." },
+            "document_id": { "type": "string", "description": "Documento de identificação (uso interno)." },
+            "date_of_birth": { "type": "string", "format": "date" },
+            "sex": { "type": "string", "enum": ["MASCULINO", "FEMININO", "OUTRO", "NAO_INFORMADO"] },
+            "oab": { "type": "string", "description": "Para advogado/defensor, se aplicável." }
+          }
+        }
+      }
+    },
+
+    "instruction_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "text", "acknowledged"],
+      "properties": {
+        "code": {
+          "type": "string",
+          "enum": [
+            "AUTOR_PODE_NAO_ESTAR_PRESENTE",
+            "NAO_HA_OBRIGACAO_DE_RECONHECER",
+            "INVESTIGACAO_PROSSEGUE",
+            "GRAU_CERTEZA_SERA_REGISTRADO"
+          ]
+        },
+        "text": { "type": "string", "minLength": 1 },
+        "acknowledged": { "type": "boolean" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      }
+    },
+
+    "presential_lineup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["persons"],
+      "properties": {
+        "persons": {
+          "type": "array",
+          "minItems": 5,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["item_id", "is_subject"],
+            "properties": {
+              "item_id": { "type": "string" },
+              "is_subject": { "type": "boolean" },
+              "notes_similarity": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+
+    "photo_lineup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["images", "iso_visual"],
+      "properties": {
+        "images": {
+          "type": "array",
+          "minItems": 5,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["item_id", "is_subject", "source_type"],
+            "properties": {
+              "item_id": { "type": "string" },
+              "is_subject": { "type": "boolean" },
+              "source_type": { "type": "string", "enum": ["FOTO_REAL", "IA_GERADA"] },
+              "provenance": { "type": "string", "description": "Procedência (ex.: coletada oficialmente, gerada por IA etc.)." },
+              "technical_notes": { "type": "string" }
+            }
+          }
+        },
+        "iso_visual": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["lighting", "background", "resolution", "crop", "no_identifiers"],
+          "properties": {
+            "lighting": { "type": "boolean" },
+            "background": { "type": "boolean" },
+            "resolution": { "type": "boolean" },
+            "crop": { "type": "boolean", "description": "Plano de corte/enquadramento equivalente (rosto e busto)." },
+            "no_identifiers": { "type": "boolean", "description": "Sem uniformes/logomarcas/números/textos." }
+          }
+        },
+        "ai": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "used": { "type": "boolean" },
+            "tool": { "type": "string" },
+            "parameters": {
+              "type": "object",
+              "additionalProperties": true,
+              "description": "Parâmetros utilizados (ex.: cor de pele, traços faciais, idade, estatura, vestuário)."
+            },
+            "justification": { "type": "string" },
+            "subject_photo_standardized": { "type": "boolean" },
+            "generated_assets_ref": { "type": "string", "description": "Referência ao lote gerado (armazenamento interno)." }
+          }
+        }
+      }
+    },
+
+    "voice_lineup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["clips", "iso_audio"],
+      "properties": {
+        "clips": {
+          "type": "array",
+          "minItems": 5,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["item_id", "is_subject"],
+            "properties": {
+              "item_id": { "type": "string" },
+              "is_subject": { "type": "boolean" },
+              "notes_similarity": { "type": "string" }
+            }
+          }
+        },
+        "iso_audio": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["quality", "volume", "duration", "content"],
+          "properties": {
+            "quality": { "type": "boolean" },
+            "volume": { "type": "boolean" },
+            "duration": { "type": "boolean" },
+            "content": { "type": "boolean", "description": "Conteúdo verbal/entonação padronizados quando aplicável." }
+          }
+        }
+      }
+    },
+
+    "custody_event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["at", "actor", "action", "artifact"],
+      "properties": {
+        "at": { "type": "string", "format": "date-time" },
+        "actor": { "type": "string", "description": "Identificador do responsável (interno)." },
+        "action": {
+          "type": "string",
+          "enum": ["CRIADO", "ACESSADO", "TRANSFERIDO", "ANEXADO_AOS_AUTOS", "EXPORTADO_PARA_JUDICIARIO", "AUDITADO"]
+        },
+        "artifact": {
+          "type": "string",
+          "enum": ["VIDEO", "TERMO", "PACOTE_ALINHAMENTO", "CHECKLIST", "OUTRO"]
+        },
+        "storage_ref": { "type": "string" },
+        "hash_sha256": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}

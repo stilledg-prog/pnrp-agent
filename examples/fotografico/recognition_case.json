@@ -1,0 +1,202 @@
+{
+  "schema_version": "1.0.0",
+  "protocol": {
+    "name": "Protocolo Nacional de Reconhecimento de Pessoas (PNRP)",
+    "source": {
+      "portaria": "MJSP nº 1122/2026",
+      "annex": "Anexo II (exemplo sanitizado)"
+    },
+    "ruleset_version": "v0.1.0"
+  },
+  "case": {
+    "case_id": "CASE-DEMO-0002",
+    "agency": {
+      "name": "Polícia Civil - DEMO",
+      "unit": "Unidade DEMO"
+    },
+    "procedure_ref": {
+      "type": "IP",
+      "number": "0000000/2026"
+    }
+  },
+  "procedure": {
+    "modality": "FOTOGRAFICO",
+    "date_time": {
+      "started_at": "2026-01-07T12:00:00Z",
+      "ended_at": "2026-01-07T12:15:00Z",
+      "timezone": "America/Sao_Paulo"
+    },
+    "location": {
+      "type": "DELEGACIA",
+      "description": "Ambiente controlado (DEMO)"
+    },
+    "lineup_mode": "SIMULTANEO",
+    "justification": {
+      "photo_modality_reason": "Impossibilidade de realização presencial (DEMO)."
+    }
+  },
+  "participants": {
+    "recognizer": {
+      "role": "RECONHECEDOR",
+      "identity": {
+        "pii_level": "REDACTED",
+        "display_name": "RECONHECEDOR (REDACTED)"
+      }
+    },
+    "subject": {
+      "role": "RECONHECIDO",
+      "identity": {
+        "pii_level": "REDACTED",
+        "display_name": "INDIVIDUO (REDACTED)"
+      }
+    },
+    "conductor": {
+      "role": "CONDUTOR",
+      "identity": {
+        "pii_level": "REDACTED",
+        "display_name": "AUTORIDADE (REDACTED)"
+      }
+    }
+  },
+  "pre_interview": {
+    "was_conducted": true,
+    "free_description": {
+      "narrative": "Descrição sanitizada, sem PII. Conteúdo demonstrativo."
+    },
+    "visibility_conditions": {
+      "time_seen_seconds": 10,
+      "distance_meters": 3,
+      "lighting": "BOA",
+      "angle": "FRONTAL",
+      "time_of_day": "DIA"
+    },
+    "prior_knowledge": {
+      "knew_before": false,
+      "prior_image_exposure": false
+    },
+    "race_color": {
+      "recognizer_self": "pardo",
+      "subject_self": "pardo",
+      "recognizer_perception_of_subject": "pardo"
+    }
+  },
+  "instructions": {
+    "delivered": true,
+    "items": [
+      {
+        "code": "AUTOR_PODE_NAO_ESTAR_PRESENTE",
+        "text": "Exemplo sanitizado.",
+        "acknowledged": true
+      },
+      {
+        "code": "NAO_HA_OBRIGACAO_DE_RECONHECER",
+        "text": "Exemplo sanitizado.",
+        "acknowledged": true
+      },
+      {
+        "code": "INVESTIGACAO_PROSSEGUE",
+        "text": "Exemplo sanitizado.",
+        "acknowledged": true
+      },
+      {
+        "code": "GRAU_CERTEZA_SERA_REGISTRADO",
+        "text": "Exemplo sanitizado.",
+        "acknowledged": true
+      }
+    ]
+  },
+  "lineup": {
+    "count_total": 6,
+    "count_fillers": 5,
+    "showup": false,
+    "reused_subject": false,
+    "composition_notes": "Exemplo sanitizado.",
+    "photographic": {
+      "images": [
+        {
+          "item_id": "I1",
+          "is_subject": false,
+          "source_type": "FOTO_REAL",
+          "provenance": "DEMO"
+        },
+        {
+          "item_id": "I2",
+          "is_subject": true,
+          "source_type": "FOTO_REAL",
+          "provenance": "DEMO"
+        },
+        {
+          "item_id": "I3",
+          "is_subject": false,
+          "source_type": "FOTO_REAL",
+          "provenance": "DEMO"
+        },
+        {
+          "item_id": "I4",
+          "is_subject": false,
+          "source_type": "FOTO_REAL",
+          "provenance": "DEMO"
+        },
+        {
+          "item_id": "I5",
+          "is_subject": false,
+          "source_type": "FOTO_REAL",
+          "provenance": "DEMO"
+        },
+        {
+          "item_id": "I6",
+          "is_subject": false,
+          "source_type": "FOTO_REAL",
+          "provenance": "DEMO"
+        }
+      ],
+      "iso_visual": {
+        "lighting": true,
+        "background": true,
+        "resolution": true,
+        "crop": true,
+        "no_identifiers": true
+      },
+      "ai": {
+        "used": false
+      }
+    }
+  },
+  "result": {
+    "outcome": "NAO_RECONHECEU",
+    "certainty_statement": "Exemplo: não reconheceu."
+  },
+  "evidence": {
+    "video": {
+      "exists": true,
+      "storage_ref": "STORAGE_REF:DEMO:VIDEO/0001"
+    },
+    "term": {
+      "exists": true,
+      "storage_ref": "STORAGE_REF:DEMO:TERMO/0001"
+    },
+    "lineup_package": {
+      "storage_ref": "STORAGE_REF:DEMO:LINEUP/0001"
+    },
+    "custody": {
+      "events": [
+        {
+          "at": "2026-01-07T12:00:00Z",
+          "actor": "AUTORIDADE (REDACTED)",
+          "action": "CRIADO",
+          "artifact": "OUTRO",
+          "notes": "Exemplo sanitizado."
+        }
+      ]
+    }
+  },
+  "audit": {
+    "created_at": "2026-01-07T12:00:00Z",
+    "created_by": "AUTORIDADE (REDACTED)",
+    "software": {
+      "agent_name": "pnrp-agent",
+      "agent_version": "0.1.0"
+    },
+    "protocol_version": "v0.1.0"
+  }
+}
