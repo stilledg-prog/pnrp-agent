@@ -1,8 +1,11 @@
 # PNRP Agent (repositório público)
 
-Este repositório organiza um **protocolo normativo-operacional** (PNRP) em artefatos versionáveis
-(JSON + Markdown) e fornece um **runtime mínimo** (scripts em `tools/`) para validação e renderização
-de termos.
+## Base normativa
+
+Este repositório implementa, em nível conceitual e operacional, o **Protocolo Nacional de Reconhecimento de Pessoas**, instituído pela **Portaria do Ministério da Justiça e Segurança Pública nº 1122/2026**, incluindo suas diretrizes gerais, regras procedimentais e mecanismos de governança.
+
+As disposições relativas ao uso de **Inteligência Artificial** observam, adicionalmente, a **Portaria MJSP nº 1080/2025**, especialmente o Capítulo de IA e o Anexo IV (Manual Técnico Simplificado).
+
 
 ## Objetivos
 
